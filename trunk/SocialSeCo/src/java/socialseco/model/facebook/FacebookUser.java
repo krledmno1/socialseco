@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package socialseco.model;
+package socialseco.model.facebook;
 
 import javax.persistence.Entity;
 import socialseco.model.User;

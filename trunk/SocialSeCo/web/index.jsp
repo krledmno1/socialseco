@@ -26,6 +26,11 @@
         <div id="link">
             <a href="./linkedin/usersExtraction.jsp">Extract User from LinkedIn</a>
         </div>
+        <!--
+        <div id="link">
+            <a href="./linkedin/usersExtraction2.jsp">Extract User from LinkedIn 2</a>
+        </div>
+        -->
         <% } %>
         
         <div id="link">
