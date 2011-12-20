@@ -20,7 +20,8 @@
         <property name="current_session_context_class">thread</property>
         
         <mapping class="socialseco.model.User"/>
-        <mapping class="socialseco.model.LinkedinUser"/>
-        <mapping class="socialseco.model.FacebookUser"/>
+        <mapping class="socialseco.model.linkedin.LinkedinUser"/>
+        <mapping class="socialseco.model.linkedin.LinkedinLanguage"/>
+        <mapping class="socialseco.model.facebook.FacebookUser"/>
     </session-factory>
 </hibernate-configuration>

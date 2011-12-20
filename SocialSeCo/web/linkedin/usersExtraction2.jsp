@@ -19,12 +19,7 @@ if(obj == null)
 
 LinkedInAuthenticator authenticator = (LinkedInAuthenticator)obj;
 UserExtractor userExtractor = new UserExtractor(authenticator);
-List<LinkedinUser> users = userExtractor.extractUsers();
-
-UserUpdater updater = new UserUpdater();
-updater.updateUsers(users);
-request.setAttribute("users", users);
-response.sendRedirect("usersList.jsp");
+String users = userExtractor.extractUsers2();
 %>
 
 <html>
@@ -40,15 +35,8 @@ response.sendRedirect("usersList.jsp");
         </div>
         
         <div id="users">
-        <% for(LinkedinUser user:users){ %>
-            <div class="user">
-                <div>Id: <%= user.getId() %></div>
-                <div>LinkedIn Id: <%= user.getLinkedinId() %></div>
-                <div>Name: <%= user.getName() %></div>
-                <div>Surname: <%= user.getSurname() %></div>
-                <div>Industry <%= user.getIndustry() %></div>
-            </div>
-        <% } %>
+        <%= users %>
         </div>
     </body>
 </html>
+

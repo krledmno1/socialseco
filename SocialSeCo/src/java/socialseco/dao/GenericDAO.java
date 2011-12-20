@@ -77,7 +77,9 @@ public class GenericDAO<T, ID extends Serializable> {
 
     
     public void remove(T entity) {
+        getSession().beginTransaction();
         getSession().delete(entity);
+        getSession().getTransaction().commit();
     }
     
     protected Class<T> getPersistentClass() {

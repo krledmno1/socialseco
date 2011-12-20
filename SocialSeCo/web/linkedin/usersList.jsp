@@ -4,7 +4,8 @@
     Author     : damian
 --%>
 
-<%@page import="socialseco.model.LinkedinUser"%>
+<%@page import="socialseco.model.linkedin.LinkedinLanguage"%>
+<%@page import="socialseco.model.linkedin.LinkedinUser"%>
 <%@page import="socialseco.dao.UserDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="socialseco.linkedin.LinkedInAuthenticator"%>
@@ -12,8 +13,14 @@
 <!DOCTYPE html>
 
 <%
-UserDAO dao = new UserDAO();
-List<LinkedinUser> users = dao.readAllLinkedinUsers();
+Object obj = session.getAttribute("users");
+List<LinkedinUser> users;
+if(obj == null){
+    UserDAO dao = new UserDAO();
+    users = dao.readAllLinkedinUsers();
+} else {
+    users = (List<LinkedinUser>)obj;
+}
 %>
 
 <html>
@@ -36,6 +43,13 @@ List<LinkedinUser> users = dao.readAllLinkedinUsers();
                 <div>Name: <%= user.getName() %></div>
                 <div>Surname: <%= user.getSurname() %></div>
                 <div>Industry <%= user.getIndustry() %></div>
+                <div class="languages">
+                <% for(LinkedinLanguage language:user.getLanguages()){ %>
+                    <div class="language">
+                        <div class="language_name"><%= language.getName() %></div>
+                    </div>
+                <% } %>
+                </div>
             </div>
         <% } %>
         </div>
