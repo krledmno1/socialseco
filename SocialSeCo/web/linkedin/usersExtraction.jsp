@@ -26,29 +26,3 @@ updater.updateUsers(users);
 request.setAttribute("users", users);
 response.sendRedirect("usersList.jsp");
 %>
-
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>LinkedIn Users Extracted and Saved</h1>
-        
-        <div id="nav">
-            <a href="../">Back</a>
-        </div>
-        
-        <div id="users">
-        <% for(LinkedinUser user:users){ %>
-            <div class="user">
-                <div>Id: <%= user.getId() %></div>
-                <div>LinkedIn Id: <%= user.getLinkedinId() %></div>
-                <div>Name: <%= user.getName() %></div>
-                <div>Surname: <%= user.getSurname() %></div>
-                <div>Industry <%= user.getIndustry() %></div>
-            </div>
-        <% } %>
-        </div>
-    </body>
-</html>
