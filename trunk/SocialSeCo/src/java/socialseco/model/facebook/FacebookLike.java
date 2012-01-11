@@ -37,4 +37,11 @@ public class FacebookLike implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    void setValuesFrom(FacebookLike read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }

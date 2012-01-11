@@ -37,4 +37,11 @@ public class FacebookGroup implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    void setValuesFrom(FacebookGroup read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }

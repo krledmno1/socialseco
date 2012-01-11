@@ -38,4 +38,11 @@ public class FacebookBook implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    void setValuesFrom(FacebookBook read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }

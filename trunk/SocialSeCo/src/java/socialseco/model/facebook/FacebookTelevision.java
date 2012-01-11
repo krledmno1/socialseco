@@ -14,8 +14,7 @@ import javax.persistence.*;
 public class FacebookTelevision implements Serializable {
     @Id @GeneratedValue
     private long Id;
-    
-   private String name;
+    private String name;
 
     /**
      * @return the name
@@ -43,5 +42,12 @@ public class FacebookTelevision implements Serializable {
      */
     public void setId(long Id) {
         this.Id = Id;
+    }
+
+    void setValuesFrom(FacebookTelevision read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
     }
 }

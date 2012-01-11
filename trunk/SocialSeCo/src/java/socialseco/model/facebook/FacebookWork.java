@@ -12,6 +12,7 @@ import javax.persistence.*;
  * @author krle
  */
 @Entity
+
 public class FacebookWork implements Serializable {
     
     private String employer;
@@ -56,6 +57,11 @@ public class FacebookWork implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    void setValuesFrom(FacebookWork read_work) {
+        if(read_work!=null)
+            setId(read_work.getId());
     }
         
 }

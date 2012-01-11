@@ -12,6 +12,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import socialseco.dao.facebookProperties.*;
 import socialseco.model.User;
 
 /**
@@ -205,17 +206,124 @@ public class FacebookUser
             setGender(user.getGender());
             setReligion(user.getReligion());
             
+           /* for(FacebookWork work: user.getWorks())
+            {
+                WorkDAO dao = new WorkDAO();
+                FacebookWork read = dao.readFacebookWorkByEmployerAndPosition(work.getEmployer(), work.getPosition());
+                work.setValuesFrom(read);
+            }
+             
+             */
             setWorks(user.getWorks());
+            
+           /* for(FacebookEducation edu: user.getEducation())
+            {
+                EducationDAO dao = new EducationDAO();
+                FacebookEducation read = dao.readFacebookEducationBySchoolAndType(edu.getSchool(), edu.getType());
+                edu.setValuesFrom(read);
+            }
+             
+             */
             setEducation(user.getEducation());
+            
+           /* for(FacebookSport spo: user.getSports())
+            {
+                SportDAO dao = new SportDAO();
+                FacebookSport read = dao.readFacebookSportByName(spo.getName());
+                spo.setValuesFrom(read);
+            }
+             
+             */
             setSports(user.getSports());
+            
+           /* for(FacebookActivity obj: user.getActivities())
+            {
+                ActivityDAO dao = new ActivityDAO();
+                FacebookActivity read = dao.readFacebookActivityByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setActivities(user.getActivities());
+            
+           /* for(FacebookGroup obj: user.getGroups())
+            {
+                GroupDAO dao = new GroupDAO();
+                FacebookGroup read = dao.readFacebookGroupByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setGroups(user.getGroups());
+            
+           /* for(FacebookInterest obj: user.getInterests())
+            {
+                InterestDAO dao = new InterestDAO();
+                FacebookInterest read = dao.readFacebookInterestByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setInterests(user.getInterests());
+            
+           /* for(FacebookLike obj: user.getLikes())
+            {
+                LikeDAO dao = new LikeDAO();
+                FacebookLike read = dao.readFacebookLikeByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setLikes(user.getLikes());
+            
+          /*  for(FacebookMovie obj: user.getMovies())
+            {
+                MovieDAO dao = new MovieDAO();
+                FacebookMovie read = dao.readFacebookMovieByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setMovies(user.getMovies());
+            
+         /*   for(FacebookMusic obj: user.getMusic())
+            {
+                MusicDAO dao = new MusicDAO();
+                FacebookMusic read = dao.readFacebookMusicByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setMusic(user.getMusic());
+            
+           /* for(FacebookTelevision obj: user.getTelevision())
+            {
+                TelevisionDAO dao = new TelevisionDAO();
+                FacebookTelevision read = dao.readFacebookTelevisionByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setTelevision(user.getTelevision());
+            /*
+            for(FacebookGame obj: user.getGames())
+            {
+                GameDAO dao = new GameDAO();
+                FacebookGame read = dao.readFacebookGameByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setGames(user.getGames());
+            /*
+            for(FacebookBook obj: user.getBooks())
+            {
+                BookDAO dao = new BookDAO();
+                FacebookBook read = dao.readFacebookBookByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
+             
+             */
             setBooks(user.getBooks());
             
             
