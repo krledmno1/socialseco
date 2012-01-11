@@ -37,4 +37,11 @@ public class FacebookGame implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    void setValuesFrom(FacebookGame read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }

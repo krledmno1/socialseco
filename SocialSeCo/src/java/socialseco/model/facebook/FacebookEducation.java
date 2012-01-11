@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
+import socialseco.dao.facebookProperties.ConcentrationDAO;
 
 
 /**
@@ -15,10 +16,12 @@ import javax.persistence.*;
  * @author krle
  */
 @Entity
+
 public class FacebookEducation implements Serializable {
         
         @Id @GeneratedValue
         private Long id;
+        
         private String school;
         private String type;
         @ManyToMany(cascade=CascadeType.ALL)
@@ -77,6 +80,20 @@ public class FacebookEducation implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    void setValuesFrom(FacebookEducation read_edu) {
+        if(read_edu!=null)
+        {
+            setId(read_edu.getId());
+            for(FacebookConcentration con: read_edu.getConecentration())
+            {
+                ConcentrationDAO dao = new ConcentrationDAO();
+                FacebookConcentration read_con = dao.readFacebookConcentrationByName(con.getName());
+                con.setValues(read_con);
+            }
+            setConecentration(read_edu.getConecentration());
+        }
     }
 
       

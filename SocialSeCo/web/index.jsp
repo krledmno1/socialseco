@@ -47,5 +47,9 @@
         <div id="link">
             <a href="./linkedin/usersList.jsp">Saved LinkedIn Users</a>
         </div>
+        
+        <div id="link">
+            <a href="./facebook/usersList.jsp">Saved Facebook Users</a>
+        </div>
     </body>
 </html>

@@ -23,6 +23,7 @@ public class FacebookActivity implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
     private String name;
 
     /**
@@ -37,5 +38,12 @@ public class FacebookActivity implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    void setValuesFrom(FacebookActivity read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
     }
 }

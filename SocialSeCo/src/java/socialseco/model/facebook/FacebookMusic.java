@@ -37,4 +37,11 @@ public class FacebookMusic implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    void setValuesFrom(FacebookMusic read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }

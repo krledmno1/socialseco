@@ -37,4 +37,11 @@ public class FacebookMovie implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    void setValuesFrom(FacebookMovie read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }

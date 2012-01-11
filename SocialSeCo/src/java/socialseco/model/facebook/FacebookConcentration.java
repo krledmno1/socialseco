@@ -39,5 +39,13 @@ public class FacebookConcentration implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    void setValues(FacebookConcentration read_con) {
+        if(read_con!=null)
+        {
+            setId(read_con.getId());
+        }
+        
+    }
     
 }

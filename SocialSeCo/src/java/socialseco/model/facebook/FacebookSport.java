@@ -37,4 +37,11 @@ public class FacebookSport implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    void setValuesFrom(FacebookSport read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }

@@ -37,4 +37,11 @@ public class FacebookInterest implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    void setValuesFrom(FacebookInterest read) {
+        if(read!=null)
+        {
+            setId(read.getId());
+        }
+    }
 }
