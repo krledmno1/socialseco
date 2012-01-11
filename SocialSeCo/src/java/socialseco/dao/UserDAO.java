@@ -4,7 +4,9 @@
  */
 package socialseco.dao;
 
+
 import java.util.List;
+
 import org.hibernate.criterion.Restrictions;
 import socialseco.model.facebook.FacebookUser;
 import socialseco.model.linkedin.LinkedinUser;
@@ -14,6 +16,8 @@ import socialseco.model.User;
  *
  * @author damian
  */
+
+
 public class UserDAO
         extends GenericDAO<User, Long> {
     

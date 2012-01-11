@@ -8,8 +8,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import socialseco.facebook.Json.JsonUser;
-import socialseco.model.facebook.FacebookUser;
-import socialseco.model.facebook.FacebookUser.Work;
+import socialseco.model.facebook.*;
+
 import socialseco.model.linkedin.LinkedinUser;
 
 /**
@@ -60,17 +60,23 @@ public class JsonConverter {
         {
             for(i=0;i<user.getWork().length;i++)
             {
-                FacebookUser.Work work = fbUser.new Work();
+                FacebookWork work = new FacebookWork();
+                
                 if(user.getWork()[i].getEmployer()!=null)
                     work.setEmployer(user.getWork()[i].getEmployer().getName());
                 if(user.getWork()[i].getPosition()!=null)
                     work.setPosition(user.getWork()[i].getPosition().getName());
 
-                fbUser.getWork().add(work);
+                fbUser.getWorks().add(work);
             }
         }
-        
-        fbUser.setBio(user.getBio());
+        if(user.getBio()!=null)
+        {
+            if(user.getBio().length()>4999)
+            {
+                fbUser.setBio(user.getBio().substring(0, 4999));
+            }
+        }
         fbUser.setGender(user.getGender());
         fbUser.setReligion(user.getReligion());
         
@@ -79,14 +85,17 @@ public class JsonConverter {
             
             for(i=0;i<user.getEducation().length;i++)
             {
-                FacebookUser.Education edu = fbUser.new Education();
+                FacebookEducation edu = new FacebookEducation();
+                
                 if(user.getEducation()[i].getSchool()!=null)
                     edu.setSchool(user.getEducation()[i].getSchool().getName());
                 if(user.getEducation()[i].getConcentration()!=null)
                 {
                     for(j=0;j<user.getEducation()[i].getConcentration().length;j++)
                     {
-                        edu.getConecntration().add(user.getEducation()[i].getConcentration()[j].getName());
+                        FacebookConcentration con = new FacebookConcentration();
+                        con.setName(user.getEducation()[i].getConcentration()[j].getName());
+                        edu.getConecentration().add(con);
                     }
                 }
                 edu.setType(user.getEducation()[i].getType());
@@ -98,7 +107,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getSports().length;i++)
             {
-                fbUser.getSports().add(user.getSports()[i].getName());
+                FacebookSport spo = new FacebookSport();
+                spo.setName(user.getSports()[i].getName());
+                fbUser.getSports().add(spo);
             }
         }
         
@@ -106,7 +117,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getAct().data.length;i++)
             {
-                fbUser.getActivities().add(user.getAct().data[i].getName());
+                FacebookActivity act = new FacebookActivity();
+                act.setName(user.getAct().data[i].getName());
+                fbUser.getActivities().add(act);
             }
         }
         
@@ -115,7 +128,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getGro().data.length;i++)
             {
-                fbUser.getGroups().add(user.getGro().data[i].getName());
+                FacebookGroup gro = new FacebookGroup();
+                gro.setName(user.getGro().data[i].getName());
+                fbUser.getGroups().add(gro);
             }
         }
         
@@ -123,7 +138,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getInte().data.length;i++)
             {
-                fbUser.getInterests().add(user.getInte().data[i].getName());
+                FacebookInterest inte = new FacebookInterest();
+                inte.setName(user.getInte().data[i].getName());
+                fbUser.getInterests().add(inte);
             }
         }
         
@@ -131,7 +148,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getLike().data.length;i++)
             {
-                fbUser.getLikes().add(user.getLike().data[i].getName());
+                FacebookLike like = new FacebookLike();
+                like.setName(user.getLike().data[i].getName());
+                fbUser.getLikes().add(like);
             }
         }
         
@@ -140,7 +159,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getMov().data.length;i++)
             {
-                fbUser.getMovies().add(user.getMov().data[i].getName());
+                FacebookMovie mov = new FacebookMovie();
+                mov.setName(user.getMov().data[i].getName());
+                fbUser.getMovies().add(mov);
             }
         }
         
@@ -148,7 +169,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getMus().data.length;i++)
             {
-                fbUser.getMusic().add(user.getMus().data[i].getName());
+                FacebookMusic mus = new FacebookMusic();
+                mus.setName(user.getMus().data[i].getName());
+                fbUser.getMusic().add(mus);
             }
         }
         
@@ -156,7 +179,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getTel().data.length;i++)
             {
-                fbUser.getTelevision().add(user.getTel().data[i].getName());
+                FacebookTelevision tel = new FacebookTelevision();
+                tel.setName(user.getTel().data[i].getName());
+                fbUser.getTelevision().add(tel);
             }
         }
         
@@ -165,7 +190,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getGam().data.length;i++)
             {
-                fbUser.getGames().add(user.getGam().data[i].getName());
+                FacebookGame gam = new FacebookGame();
+                gam.setName(user.getGam().data[i].getName());
+                fbUser.getGames().add(gam);
             }
         }
         
@@ -173,7 +200,9 @@ public class JsonConverter {
         {
             for(i=0;i<user.getBook().data.length;i++)
             {
-                fbUser.getBooks().add(user.getBook().data[i].getName());
+                FacebookBook book = new FacebookBook();
+                book.setName(user.getBook().data[i].getName());
+                fbUser.getBooks().add(book);
             }
         }
         return fbUser;

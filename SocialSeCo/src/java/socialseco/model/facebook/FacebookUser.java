@@ -6,7 +6,12 @@ package socialseco.model.facebook;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import socialseco.model.User;
 
 /**
@@ -21,36 +26,66 @@ public class FacebookUser
     private String fullName;
     private String hometown;
     private String location;
-    private List<Work> work;
+    
+    @ManyToMany(cascade=CascadeType.ALL, fetch= FetchType.EAGER) 
+    @GenericGenerator(name="uuid-gen", strategy = "uuid")
+    @CollectionId(columns = @Column(name = "COL_ID"), type = @Type(type = "string"), generator = "uuid-gen") 
+    private List<FacebookWork> works;
+    @Column(length=5000)
     private String bio;
     private String gender;
     private String religion;
-    private List<Education> education;
-    private List<String> sports;
-    private List<String> activities;
-    private List<String> groups;
-    private List<String> interests;
-    private List<String> likes;
-    private List<String> movies;
-    private List<String> music;
-    private List<String> television;
-    private List<String> games;
-    private List<String> books;
+    
+    @ManyToMany(cascade=CascadeType.ALL, fetch= FetchType.EAGER) 
+    @GenericGenerator(name="uuid-gen", strategy = "uuid")
+    @CollectionId(columns = @Column(name = "COL_ID"), type = @Type(type = "string"), generator = "uuid-gen") 
+    private List<FacebookEducation> education;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookSport> sports;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookActivity> activities;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookGroup> groups;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookInterest> interests;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookLike> likes;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookMovie> movies;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookMusic> music;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookTelevision> television;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookGame> games;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookBook> books;
 
+    
     public FacebookUser() {
         
-        work = new ArrayList<Work>();
-        education = new ArrayList<Education>();
-        sports = new ArrayList<String>();
-        activities = new ArrayList<String>();
-        groups = new ArrayList<String>();
-        interests = new ArrayList<String>();
-        likes = new ArrayList<String>();
-        movies = new ArrayList<String>();
-        music = new ArrayList<String>();
-        television = new ArrayList<String>();
-        games = new ArrayList<String>();
-        books = new ArrayList<String>();
+        works = new ArrayList<FacebookWork>();
+        education = new ArrayList<FacebookEducation>();
+        sports = new ArrayList<FacebookSport>();
+        activities = new ArrayList<FacebookActivity>();
+        groups = new ArrayList<FacebookGroup>();
+        interests = new ArrayList<FacebookInterest>();
+        likes = new ArrayList<FacebookLike>();
+        movies = new ArrayList<FacebookMovie>();
+        music = new ArrayList<FacebookMusic>();
+        television = new ArrayList<FacebookTelevision>();
+        games = new ArrayList<FacebookGame>();
+        books = new ArrayList<FacebookBook>();
           
     }
 
@@ -96,19 +131,7 @@ public class FacebookUser
         this.location = location;
     }
 
-    /**
-     * @return the work
-     */
-    public List<Work> getWork() {
-        return work;
-    }
-
-    /**
-     * @param work the work to set
-     */
-    public void setWork(List<Work> work) {
-        this.work = work;
-    }
+   
 
     /**
      * @return the bio
@@ -152,257 +175,10 @@ public class FacebookUser
         this.religion = religion;
     }
 
-    /**
-     * @return the education
-     */
-    public List<Education> getEducation() {
-        return education;
-    }
-
-    /**
-     * @param education the education to set
-     */
-    public void setEducation(List<Education> education) {
-        this.education = education;
-    }
-
-    /**
-     * @return the sports
-     */
-    public List<String> getSports() {
-        return sports;
-    }
-
-    /**
-     * @param sports the sports to set
-     */
-    public void setSports(List<String> sports) {
-        this.sports = sports;
-    }
-
-    /**
-     * @return the activities
-     */
-    public List<String> getActivities() {
-        return activities;
-    }
-
-    /**
-     * @param activities the activities to set
-     */
-    public void setActivities(List<String> activities) {
-        this.activities = activities;
-    }
-
-    /**
-     * @return the groups
-     */
-    public List<String> getGroups() {
-        return groups;
-    }
-
-    /**
-     * @param groups the groups to set
-     */
-    public void setGroups(List<String> groups) {
-        this.groups = groups;
-    }
-
-    /**
-     * @return the interests
-     */
-    public List<String> getInterests() {
-        return interests;
-    }
-
-    /**
-     * @param interests the interests to set
-     */
-    public void setInterests(List<String> interests) {
-        this.interests = interests;
-    }
-
-    /**
-     * @return the likes
-     */
-    public List<String> getLikes() {
-        return likes;
-    }
-
-    /**
-     * @param likes the likes to set
-     */
-    public void setLikes(List<String> likes) {
-        this.likes = likes;
-    }
-
-    /**
-     * @return the movies
-     */
-    public List<String> getMovies() {
-        return movies;
-    }
-
-    /**
-     * @param movies the movies to set
-     */
-    public void setMovies(List<String> movies) {
-        this.movies = movies;
-    }
-
-    /**
-     * @return the music
-     */
-    public List<String> getMusic() {
-        return music;
-    }
-
-    /**
-     * @param music the music to set
-     */
-    public void setMusic(List<String> music) {
-        this.music = music;
-    }
-
-    /**
-     * @return the television
-     */
-    public List<String> getTelevision() {
-        return television;
-    }
-
-    /**
-     * @param television the television to set
-     */
-    public void setTelevision(List<String> television) {
-        this.television = television;
-    }
-
-    /**
-     * @return the games
-     */
-    public List<String> getGames() {
-        return games;
-    }
-
-    /**
-     * @param games the games to set
-     */
-    public void setGames(List<String> games) {
-        this.games = games;
-    }
-
-    /**
-     * @return the books
-     */
-    public List<String> getBooks() {
-        return books;
-    }
-
-    /**
-     * @param books the books to set
-     */
-    public void setBooks(List<String> books) {
-        this.books = books;
-    }
     
     
-    @Entity
-    public class Education
-    {
-        
-        private String school;
-        private String type;
-        private List<String> conecntration;
-
-        public Education() {
-            conecntration = new ArrayList<String>();
-        }
-
-        /**
-         * @return the school
-         */
-        public String getSchool() {
-            return school;
-        }
-
-        /**
-         * @param school the school to set
-         */
-        public void setSchool(String school) {
-            this.school = school;
-        }
-
-        /**
-         * @return the type
-         */
-        public String getType() {
-            return type;
-        }
-
-        /**
-         * @param type the type to set
-         */
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        /**
-         * @return the conecntration
-         */
-        public List<String> getConecntration() {
-            return conecntration;
-        }
-
-        /**
-         * @param conecntration the conecntration to set
-         */
-        public void setConecntration(List<String> conecntration) {
-            this.conecntration = conecntration;
-        }
-
-       
-        
-    }
-    @Entity
-    public class Work
-    {
-        private String employer;
-        private String position;
-
-        public Work() {
-        }
-
-        /**
-         * @return the employer
-         */
-        public String getEmployer() {
-            return employer;
-        }
-
-        /**
-         * @param employer the employer to set
-         */
-        public void setEmployer(String employer) {
-            this.employer = employer;
-        }
-
-        /**
-         * @return the position
-         */
-        public String getPosition() {
-            return position;
-        }
-
-        /**
-         * @param position the position to set
-         */
-        public void setPosition(String position) {
-            this.position = position;
-        }
-        
-        
-    }
+   
+    
 
     
     public String getFacebookId() {
@@ -429,7 +205,7 @@ public class FacebookUser
             setGender(user.getGender());
             setReligion(user.getReligion());
             
-            setWork(user.getWork());
+            setWorks(user.getWorks());
             setEducation(user.getEducation());
             setSports(user.getSports());
             setActivities(user.getActivities());
@@ -444,5 +220,173 @@ public class FacebookUser
             
             
         }
+    }
+
+    /**
+     * @return the works
+     */
+    public List<FacebookWork> getWorks() {
+        return works;
+    }
+
+    /**
+     * @param works the works to set
+     */
+    public void setWorks(List<FacebookWork> works) {
+        this.works = works;
+    }
+
+    /**
+     * @return the education
+     */
+    public List<FacebookEducation> getEducation() {
+        return education;
+    }
+
+    /**
+     * @param education the education to set
+     */
+    public void setEducation(List<FacebookEducation> education) {
+        this.education = education;
+    }
+
+    /**
+     * @return the sports
+     */
+    public List<FacebookSport> getSports() {
+        return sports;
+    }
+
+    /**
+     * @param sports the sports to set
+     */
+    public void setSports(List<FacebookSport> sports) {
+        this.sports = sports;
+    }
+
+    /**
+     * @return the activities
+     */
+    public List<FacebookActivity> getActivities() {
+        return activities;
+    }
+
+    /**
+     * @param activities the activities to set
+     */
+    public void setActivities(List<FacebookActivity> activities) {
+        this.activities = activities;
+    }
+
+    /**
+     * @return the groups
+     */
+    public List<FacebookGroup> getGroups() {
+        return groups;
+    }
+
+    /**
+     * @param groups the groups to set
+     */
+    public void setGroups(List<FacebookGroup> groups) {
+        this.groups = groups;
+    }
+
+    /**
+     * @return the interests
+     */
+    public List<FacebookInterest> getInterests() {
+        return interests;
+    }
+
+    /**
+     * @param interests the interests to set
+     */
+    public void setInterests(List<FacebookInterest> interests) {
+        this.interests = interests;
+    }
+
+    /**
+     * @return the likes
+     */
+    public List<FacebookLike> getLikes() {
+        return likes;
+    }
+
+    /**
+     * @param likes the likes to set
+     */
+    public void setLikes(List<FacebookLike> likes) {
+        this.likes = likes;
+    }
+
+    /**
+     * @return the movies
+     */
+    public List<FacebookMovie> getMovies() {
+        return movies;
+    }
+
+    /**
+     * @param movies the movies to set
+     */
+    public void setMovies(List<FacebookMovie> movies) {
+        this.movies = movies;
+    }
+
+    /**
+     * @return the music
+     */
+    public List<FacebookMusic> getMusic() {
+        return music;
+    }
+
+    /**
+     * @param music the music to set
+     */
+    public void setMusic(List<FacebookMusic> music) {
+        this.music = music;
+    }
+
+    /**
+     * @return the television
+     */
+    public List<FacebookTelevision> getTelevision() {
+        return television;
+    }
+
+    /**
+     * @param television the television to set
+     */
+    public void setTelevision(List<FacebookTelevision> television) {
+        this.television = television;
+    }
+
+    /**
+     * @return the games
+     */
+    public List<FacebookGame> getGames() {
+        return games;
+    }
+
+    /**
+     * @param games the games to set
+     */
+    public void setGames(List<FacebookGame> games) {
+        this.games = games;
+    }
+
+    /**
+     * @return the books
+     */
+    public List<FacebookBook> getBooks() {
+        return books;
+    }
+
+    /**
+     * @param books the books to set
+     */
+    public void setBooks(List<FacebookBook> books) {
+        this.books = books;
     }
 }
