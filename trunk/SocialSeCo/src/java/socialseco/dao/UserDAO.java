@@ -53,4 +53,18 @@ public class UserDAO
         
         return list;
     }
+    
+    
+    public FacebookUser readFacebookUsersById(String facebookId) {
+        getSession().beginTransaction();
+        
+        FacebookUser user = (FacebookUser) getSession()
+                .createCriteria(FacebookUser.class)
+                .add(Restrictions.eq("facebookId", facebookId))
+                .uniqueResult();
+        
+        getSession().getTransaction().commit();
+        
+        return user;
+    }
 }
