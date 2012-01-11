@@ -54,22 +54,8 @@ if(obj == null){
                 <!-- TO DO: for loop for these guys -->
                 <br/>
                 <div>Education: <%= !user.getEducation().isEmpty() ? user.getEducation().get(0).getSchool() : ""  %></div>
-                <div>Work: <%= !user.getWork().isEmpty() ? user.getWork().get(0).getEmployer() : ""  %></div>
-               
-                <br/>
-                <div> Example instances of the fields </div>
-                <div>Activities: <%= !user.getActivities().isEmpty()  ? user.getActivities().get(0) : ""  %></div>
-                <div>Interests: <%= !user.getInterests().isEmpty() ? user.getInterests().get(0) : ""  %></div>
-                <div>Groups: <%= !user.getGroups().isEmpty() ? user.getGroups().get(0) : ""  %></div>
-                <div>Likes: <%= !user.getLikes().isEmpty() ? user.getLikes().get(0) : ""  %></div>
-                <div>Books: <%= !user.getBooks().isEmpty() ? user.getBooks().get(0) : ""  %></div>
-                <div>Games: <%= !user.getGames().isEmpty() ? user.getGames().get(0) : ""  %></div>
-                <div>Movies: <%= !user.getMovies().isEmpty() ? user.getMovies().get(0) : ""  %></div>
-                <div>Music: <%= !user.getMusic().isEmpty() ? user.getMusic().get(0) : ""  %></div>
-                <div>Television: <%= !user.getTelevision().isEmpty() ? user.getTelevision().get(0) : ""  %></div>
-
-
-
+                <div>Work: <%= !user.getWorks().isEmpty() ? user.getWorks().get(0).getEmployer() : ""  %></div>
+      
 
                 <br/>
                _________________________________________________________________________________________________
