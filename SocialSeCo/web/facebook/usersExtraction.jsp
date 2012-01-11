@@ -6,18 +6,13 @@
 
 <%@page import="socialseco.facebook.Json.JsonUser"%>
 <%@page import="socialseco.model.facebook.FacebookUser"%>
-<%@page import="socialseco.controller.UserUpdater"%>
+<%@page import="socialseco.controller.*"%>
 <%@page import="java.util.List"%>
 <%@page import="socialseco.facebook.FacebookUserExtractor"%>
 <%@page import="socialseco.facebook.FacebookAuthenticator"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>User extraction</title>
-    </head>
-    <body>
+
         <%
 Object obj = session.getAttribute("facebook_authenticator");
 if(obj == null)
@@ -27,18 +22,16 @@ FacebookAuthenticator authenticator = (FacebookAuthenticator)obj;
 FacebookUserExtractor userExtractor = new FacebookUserExtractor(authenticator);
 List<JsonUser> users = userExtractor.extractUsers();
 
-/*
+//DB update
 UserUpdater updater = new UserUpdater();
-updater.updateUsers(users);
+List<FacebookUser> fbUsers = JsonConverter.convertToFBObjects(users);
+updater.updateFBUsers(fbUsers);
 
-this is to update the DB 
 
-*/
-session.setAttribute("usersFB", users);
+//wont work with request, DAmian why ?!
+request.setAttribute("usersFB", fbUsers);
 response.sendRedirect("usersList.jsp");
 
 %>
 
  
-    </body>
-</html>

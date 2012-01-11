@@ -7,6 +7,7 @@ package socialseco.controller;
 import java.util.List;
 import socialseco.dao.LinkedinLanguageDAO;
 import socialseco.dao.UserDAO;
+import socialseco.model.facebook.FacebookUser;
 import socialseco.model.linkedin.LinkedinLanguage;
 import socialseco.model.linkedin.LinkedinUser;
 
@@ -26,6 +27,23 @@ public class UserUpdater {
                 LinkedinLanguageDAO languageDAO = new LinkedinLanguageDAO();
                 for(LinkedinLanguage language:read_user.getLanguages())
                     languageDAO.remove(language);
+                
+                read_user.setValuesFrom(user_it);
+                dao.persist(read_user);
+            } else {
+                dao.persist(user_it);
+            }
+        }
+    }
+    
+    
+    public void updateFBUsers(List<FacebookUser> users) {
+        UserDAO dao = new UserDAO();
+        
+        for(FacebookUser user_it: users){
+            FacebookUser read_user = dao.readFacebookUsersById(user_it.getFacebookId());
+            
+            if(read_user != null) {
                 
                 read_user.setValuesFrom(user_it);
                 dao.persist(read_user);
