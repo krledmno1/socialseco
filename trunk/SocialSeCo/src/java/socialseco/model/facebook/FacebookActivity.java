@@ -54,7 +54,7 @@ public class FacebookActivity implements Serializable {
     {
         if(obj instanceof FacebookActivity)
         {
-            if(this.name.equalsIgnoreCase(((FacebookActivity)obj).getName()))
+            if(this.name.equals(((FacebookActivity)obj).getName()))
             {
                         return true;
             }

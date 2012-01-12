@@ -31,7 +31,7 @@ public class FacebookLike implements Serializable {
     {
         if(obj instanceof FacebookLike)
         {
-            if(this.name.equalsIgnoreCase(((FacebookLike)obj).getName()))
+            if(this.name.equals(((FacebookLike)obj).getName()))
             {
                         return true;
             }

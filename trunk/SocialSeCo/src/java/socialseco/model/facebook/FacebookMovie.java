@@ -31,7 +31,7 @@ public class FacebookMovie implements Serializable {
     {
         if(obj instanceof FacebookMovie)
         {
-            if(this.name.equalsIgnoreCase(((FacebookMovie)obj).getName()))
+            if(this.name.equals(((FacebookMovie)obj).getName()))
             {
                         return true;
             }

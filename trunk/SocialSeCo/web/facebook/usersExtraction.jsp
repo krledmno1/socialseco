@@ -28,7 +28,6 @@ List<FacebookUser> fbUsers = JsonConverter.convertToFBObjects(users);
 updater.updateFBUsers(fbUsers);
 
 
-//wont work with request, DAmian why ?!
 request.setAttribute("usersFB", fbUsers);
 response.sendRedirect("usersList.jsp");
 

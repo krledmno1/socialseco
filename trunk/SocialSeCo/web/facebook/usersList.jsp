@@ -4,6 +4,8 @@
     Author     : krle
 --%>
 
+<%@page import="socialseco.dao.facebookProperties.EducationDAO"%>
+<%@page import="socialseco.dao.facebookProperties.ActivityDAO"%>
 <%@page import="socialseco.model.facebook.FacebookUser"%>
 <%@page import="socialseco.dao.UserDAO"%>
 <%@page import="java.util.List"%>
@@ -17,11 +19,12 @@
         <title>Facebook users</title>
     </head>
    
-<% Object obj = request.getAttribute("usersFB");
+<% Object obj = session.getAttribute("usersFB");
 List<FacebookUser> users =null;
 if(obj == null){
     UserDAO dao = new UserDAO();
     users = dao.readAllFacebookUsers();
+    
 } else {
     users = (List<FacebookUser>)obj;
 }   
@@ -51,12 +54,6 @@ if(obj == null){
                 <div>Hometown: <%= user.getHometown() != null ? user.getHometown() : ""  %></div>
                 <div>Location: <%= user.getLocation() != null ? user.getLocation() : ""  %></div>
                 
-                <!-- TO DO: for loop for these guys -->
-                <br/>
-                <div>Education: <%= !user.getEducation().isEmpty() ? user.getEducation().get(0).getSchool() : ""  %></div>
-                <div>Work: <%= !user.getWorks().isEmpty() ? user.getWorks().get(0).getEmployer() : ""  %></div>
-      
-
                 <br/>
                _________________________________________________________________________________________________
             </div>

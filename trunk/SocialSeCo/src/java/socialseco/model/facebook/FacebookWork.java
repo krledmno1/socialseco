@@ -28,12 +28,20 @@ public class FacebookWork implements Serializable {
     {
         if(obj instanceof FacebookWork)
         {
-            if(this.employer.equalsIgnoreCase(((FacebookWork)obj).getEmployer())  &&this.position.equalsIgnoreCase(((FacebookWork)obj).getPosition()))
+            if(this.employer.equals(((FacebookWork)obj).getEmployer())  &&this.position.equals(((FacebookWork)obj).getPosition()))
             {
                         return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.employer != null ? this.employer.hashCode() : 0);
+        hash = 41 * hash + (this.position != null ? this.position.hashCode() : 0);
+        return hash;
     }
     
     

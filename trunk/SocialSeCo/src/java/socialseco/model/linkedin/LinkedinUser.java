@@ -20,7 +20,7 @@ public class LinkedinUser
     protected String linkedinId;
     protected String industry;
     
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.ALL)
     protected List<LinkedinLanguage> languages;
     
     public LinkedinUser(){

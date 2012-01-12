@@ -68,7 +68,7 @@ public class GenericDAO<T, ID extends Serializable> {
     public T persist(T entity) {
         getSession().beginTransaction();
         
-        getSession().saveOrUpdate(entity);
+        getSession().merge(entity);
         
         getSession().getTransaction().commit();
         
