@@ -32,7 +32,7 @@ public class FacebookInterest implements Serializable {
     {
         if(obj instanceof FacebookInterest)
         {
-            if(this.name.equals(((FacebookInterest)obj).getName()))
+            if(this.name.equalsIgnoreCase(((FacebookInterest)obj).getName()))
             {
                         return true;
             }

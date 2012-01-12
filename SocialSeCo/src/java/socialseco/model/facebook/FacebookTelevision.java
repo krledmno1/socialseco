@@ -23,7 +23,7 @@ public class FacebookTelevision implements Serializable {
     {
         if(obj instanceof FacebookTelevision)
         {
-            if(this.name.equals(((FacebookTelevision)obj).getName()))
+            if(this.name.equalsIgnoreCase(((FacebookTelevision)obj).getName()))
             {
                         return true;
             }

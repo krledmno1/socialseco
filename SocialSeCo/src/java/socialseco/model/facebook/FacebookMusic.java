@@ -31,7 +31,7 @@ public class FacebookMusic implements Serializable {
     {
         if(obj instanceof FacebookMusic)
         {
-            if(this.name.equals(((FacebookMusic)obj).getName()))
+            if(this.name.equalsIgnoreCase(((FacebookMusic)obj).getName()))
             {
                         return true;
             }
