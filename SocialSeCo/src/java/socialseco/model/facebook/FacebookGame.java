@@ -25,7 +25,7 @@ public class FacebookGame implements Serializable {
     {
         if(obj instanceof FacebookGame)
         {
-            if(this.name.equalsIgnoreCase(((FacebookGame)obj).getName()))
+            if(this.name.equals(((FacebookGame)obj).getName()))
             {
                         return true;
             }

@@ -31,7 +31,7 @@ public class FacebookSport implements Serializable {
     {
         if(obj instanceof FacebookSport)
         {
-            if(this.name.equalsIgnoreCase(((FacebookSport)obj).getName()))
+            if(this.name.equals(((FacebookSport)obj).getName()))
             {
                         return true;
             }

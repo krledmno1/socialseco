@@ -23,7 +23,7 @@ public class FacebookGroup implements Serializable {
     {
         if(obj instanceof FacebookGroup)
         {
-            if(this.name.equalsIgnoreCase(((FacebookGroup)obj).getName()))
+            if(this.name.equals(((FacebookGroup)obj).getName()))
             {
                         return true;
             }

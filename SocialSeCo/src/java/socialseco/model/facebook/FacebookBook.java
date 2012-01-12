@@ -23,7 +23,7 @@ public class FacebookBook implements Serializable {
     {
         if(obj instanceof FacebookBook)
         {
-            if(this.name.equalsIgnoreCase(((FacebookBook)obj).getName()))
+            if(this.name.equals(((FacebookBook)obj).getName()))
             {
                         return true;
             }

@@ -5,10 +5,14 @@
 package socialseco.model.facebook;
 
 import java.util.ArrayList;
+
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import socialseco.dao.facebookProperties.*;
 import socialseco.model.User;
 
@@ -26,6 +30,8 @@ public class FacebookUser
     private String location;
     
     @ManyToMany(cascade=CascadeType.ALL) 
+    //@GenericGenerator(name="uuid-gen", strategy = "uuid")
+    //@CollectionId(columns = @Column(name = "COL_ID"), type = @Type(type = "string"), generator = "uuid-gen") 
     private List<FacebookWork> works;
     @Column(length=5000)
     private String bio;
@@ -238,14 +244,29 @@ public class FacebookUser
             getWorks().addAll(w);
         
             
+            Set<FacebookConcentration> conAll = new LinkedHashSet<FacebookConcentration>();
             for(FacebookEducation edu: getEducation())
             {
                 Set<FacebookConcentration> con = new LinkedHashSet<FacebookConcentration>();
                 con.addAll(edu.getConecentration());
                 edu.getConecentration().clear();
                 edu.getConecentration().addAll(con);
+                
+                conAll.addAll(con);
             }
             
+            //remove duplicates across schools 
+            for(FacebookEducation edu: getEducation())
+            {
+                for(FacebookConcentration con: edu.getConecentration())
+                {
+                    if(conAll.contains(con))
+                        conAll.remove(con);
+                    else
+                        edu.getConecentration().remove(con);
+                }
+            }
+           
             //remove duplicates
             Set<FacebookSport> s = new LinkedHashSet<FacebookSport>();
             s.addAll(getSports());
