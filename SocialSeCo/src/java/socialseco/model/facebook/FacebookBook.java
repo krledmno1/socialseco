@@ -15,7 +15,30 @@ public class FacebookBook implements Serializable {
     @Id @GeneratedValue
     private Long id;
     
+    @Column(unique=true)
     private String name;
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookBook)
+        {
+            if(this.name.equals(((FacebookBook)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+    
+    
 
     /**
      * @return the name

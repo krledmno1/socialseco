@@ -22,8 +22,30 @@ public class FacebookInterest implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    private String name;
 
+    @Column(unique=true)
+     private String name;
+
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookInterest)
+        {
+            if(this.name.equals(((FacebookInterest)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
     /**
      * @return the name
      */

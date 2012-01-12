@@ -12,7 +12,9 @@ import javax.persistence.*;
  * @author krle
  */
 @Entity
-
+@Table(uniqueConstraints = {
+    @UniqueConstraint(columnNames={"employer", "position"})
+})
 public class FacebookWork implements Serializable {
     
     private String employer;
@@ -20,6 +22,21 @@ public class FacebookWork implements Serializable {
     @Id @GeneratedValue
     private Long id;
 
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookWork)
+        {
+            if(this.employer.equals(((FacebookWork)obj).getEmployer())  &&this.position.equals(((FacebookWork)obj).getPosition()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+    
+    
     public FacebookWork() {
     }
 
