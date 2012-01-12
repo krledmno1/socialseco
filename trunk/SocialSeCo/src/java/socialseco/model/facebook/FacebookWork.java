@@ -28,7 +28,7 @@ public class FacebookWork implements Serializable {
     {
         if(obj instanceof FacebookWork)
         {
-            if(this.employer.equals(((FacebookWork)obj).getEmployer())  &&this.position.equals(((FacebookWork)obj).getPosition()))
+            if(this.employer.equalsIgnoreCase(((FacebookWork)obj).getEmployer())  &&this.position.equalsIgnoreCase(((FacebookWork)obj).getPosition()))
             {
                         return true;
             }
