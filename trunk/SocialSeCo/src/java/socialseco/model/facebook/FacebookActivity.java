@@ -24,6 +24,7 @@ public class FacebookActivity implements Serializable {
         this.id = id;
     }
     
+    @Column(unique=true)
     private String name;
 
     /**
@@ -40,10 +41,32 @@ public class FacebookActivity implements Serializable {
         this.name = name;
     }
 
-    void setValuesFrom(FacebookActivity read) {
+    public void setValuesFrom(FacebookActivity read) {
         if(read!=null)
         {
             setId(read.getId());
         }
     }
+        
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookActivity)
+        {
+            if(this.name.equals(((FacebookActivity)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+    
 }

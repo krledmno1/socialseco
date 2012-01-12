@@ -16,7 +16,6 @@ import socialseco.dao.facebookProperties.ConcentrationDAO;
  * @author krle
  */
 @Entity
-
 public class FacebookEducation implements Serializable {
         
         @Id @GeneratedValue
@@ -27,6 +26,9 @@ public class FacebookEducation implements Serializable {
         @ManyToMany(cascade=CascadeType.ALL)
         private List<FacebookConcentration> concentration;
    
+
+    
+  
 
         public FacebookEducation() {
             concentration = new ArrayList<FacebookConcentration>();

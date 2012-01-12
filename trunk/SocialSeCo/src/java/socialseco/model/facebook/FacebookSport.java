@@ -22,8 +22,29 @@ public class FacebookSport implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    private String name;
+@Column(unique=true)
+     private String name;
 
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookSport)
+        {
+            if(this.name.equals(((FacebookSport)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
     /**
      * @return the name
      */

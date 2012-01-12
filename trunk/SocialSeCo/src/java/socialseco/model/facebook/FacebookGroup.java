@@ -14,8 +14,31 @@ import javax.persistence.*;
 public class FacebookGroup implements Serializable {
     @Id @GeneratedValue
     private Long id;
-    private String name;
+    @Column(unique=true)
+     private String name;
 
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookGroup)
+        {
+            if(this.name.equals(((FacebookGroup)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 13 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+    
+    
     /**
      * @return the name
      */

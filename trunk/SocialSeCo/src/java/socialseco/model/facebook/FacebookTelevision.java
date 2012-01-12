@@ -14,8 +14,29 @@ import javax.persistence.*;
 public class FacebookTelevision implements Serializable {
     @Id @GeneratedValue
     private long Id;
-    private String name;
+@Column(unique=true)
+     private String name;
 
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookTelevision)
+        {
+            if(this.name.equals(((FacebookTelevision)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
     /**
      * @return the name
      */

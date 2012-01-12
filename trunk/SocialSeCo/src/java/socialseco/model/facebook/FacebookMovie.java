@@ -22,8 +22,29 @@ public class FacebookMovie implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    private String name;
+@Column(unique=true)
+     private String name;
 
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookMovie)
+        {
+            if(this.name.equals(((FacebookMovie)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
     /**
      * @return the name
      */

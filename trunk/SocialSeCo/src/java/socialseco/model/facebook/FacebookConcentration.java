@@ -15,7 +15,32 @@ import javax.persistence.*;
 public class FacebookConcentration implements Serializable {
     @Id @GeneratedValue
     private Long id;
-    private String name;
+    
+    
+    
+     @Column(unique=true)
+     private String name;
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof FacebookBook)
+        {
+            if(this.name.equals(((FacebookBook)obj).getName()))
+            {
+                        return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+
     
     
     public Long getId() {
