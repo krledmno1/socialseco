@@ -44,12 +44,15 @@ public class UserUpdater {
         
         for(FacebookUser user_it: users){
             FacebookUser read_user = dao.readFacebookUsersById(user_it.getFacebookId());
+            user_it.removeDuplicates();
+            user_it.updateReferences();
             
             if(read_user != null) {
                 
                 read_user.setValuesFrom(user_it);
                 dao.persist(read_user);
             } else {
+                
                 dao.persist(user_it);
             }
         }

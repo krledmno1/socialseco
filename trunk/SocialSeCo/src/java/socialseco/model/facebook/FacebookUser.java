@@ -9,11 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 import socialseco.dao.facebookProperties.*;
 import socialseco.model.User;
 
@@ -206,30 +201,129 @@ public class FacebookUser
             setGender(user.getGender());
             setReligion(user.getReligion());
     
-            //remove duplicates
-            Set<FacebookWork> w = new LinkedHashSet<FacebookWork>();
-            w.addAll(user.getWorks());
-            user.getWorks().clear();
-            user.getWorks().addAll(w);
-            
-            //check if exists
-            for(FacebookWork work: user.getWorks())
-            {
-                WorkDAO dao = new WorkDAO();
-                FacebookWork read = dao.readFacebookWorkByEmployerAndPosition(work.getEmployer(), work.getPosition());
-                work.setValuesFrom(read);
-            }
-            //set
             setWorks(user.getWorks());
             
+            setEducation(user.getEducation());
             
-            //set
-            for(FacebookEducation edu: user.getEducation())
+            setSports(user.getSports());
+            
+            setActivities(user.getActivities());
+            
+            setGroups(user.getGroups());
+            
+            setInterests(user.getInterests());
+            
+            setLikes(user.getLikes());
+            
+            setMovies(user.getMovies());
+            
+            setMusic(user.getMusic());
+           
+            setTelevision(user.getTelevision());
+           
+            setGames(user.getGames());
+         
+            setBooks(user.getBooks());
+            
+            
+        }
+    }
+
+    public void removeDuplicates()
+    {
+             //remove duplicates
+            Set<FacebookWork> w = new LinkedHashSet<FacebookWork>();
+            w.addAll(getWorks());
+            getWorks().clear();
+            getWorks().addAll(w);
+        
+            
+            for(FacebookEducation edu: getEducation())
             {
                 Set<FacebookConcentration> con = new LinkedHashSet<FacebookConcentration>();
                 con.addAll(edu.getConecentration());
                 edu.getConecentration().clear();
                 edu.getConecentration().addAll(con);
+            }
+            
+            //remove duplicates
+            Set<FacebookSport> s = new LinkedHashSet<FacebookSport>();
+            s.addAll(getSports());
+            getSports().clear();
+            getSports().addAll(s);
+            
+            //remove duplicates
+            Set<FacebookActivity> a = new LinkedHashSet<FacebookActivity>();
+            a.addAll(getActivities());
+            getActivities().clear();
+            getActivities().addAll(a);
+        
+             //remove duplicates
+            Set<FacebookGroup> gr = new LinkedHashSet<FacebookGroup>();
+            gr.addAll(getGroups());
+            getGroups().clear();
+            getGroups().addAll(gr);
+        
+            //remove duplicates
+            Set<FacebookInterest> i = new LinkedHashSet<FacebookInterest>();
+            i.addAll(getInterests());
+            getInterests().clear();
+            getInterests().addAll(i);
+        
+            //remove duplicates
+            Set<FacebookLike> l = new LinkedHashSet<FacebookLike>();
+            l.addAll(getLikes());
+            getLikes().clear();
+            getLikes().addAll(l);
+            
+            
+             //remove duplicates
+            Set<FacebookMovie> mo = new LinkedHashSet<FacebookMovie>();
+            mo.addAll(getMovies());
+            getMovies().clear();
+            getMovies().addAll(mo);
+            
+            //remove duplicates
+            Set<FacebookMusic> mu = new LinkedHashSet<FacebookMusic>();
+            mu.addAll(getMusic());
+            getMusic().clear();
+            getMusic().addAll(mu);
+            
+            
+            //remove duplicates
+            Set<FacebookTelevision> t = new LinkedHashSet<FacebookTelevision>();
+            t.addAll(getTelevision());
+            getTelevision().clear();
+            getTelevision().addAll(t);
+        
+            //remove duplicates
+            Set<FacebookGame> ga = new LinkedHashSet<FacebookGame>();
+            ga.addAll(getGames());
+            getGames().clear();
+            getGames().addAll(ga);
+            
+            //remove duplicates
+            Set<FacebookBook> b = new LinkedHashSet<FacebookBook>();
+            b.addAll(getBooks());
+            getBooks().clear();
+            getBooks().addAll(b);
+    }
+    
+    public void updateReferences()
+    {
+        //check if exists
+            for(FacebookWork work: getWorks())
+            {
+                WorkDAO dao = new WorkDAO();
+                FacebookWork read = dao.readFacebookWorkByEmployerAndPosition(work.getEmployer(), work.getPosition());
+                work.setValuesFrom(read);
+            }
+           
+            
+          
+            for(FacebookEducation edu: getEducation())
+            {
+                
                 
                 for(FacebookConcentration conc: edu.getConecentration())
                 {
@@ -238,171 +332,106 @@ public class FacebookUser
                     conc.setValues(read);
                 }
             }
-            setEducation(user.getEducation());
             
             
-            //remove duplicates
-            Set<FacebookSport> s = new LinkedHashSet<FacebookSport>();
-            s.addAll(user.getSports());
-            user.getSports().clear();
-            user.getSports().addAll(s);
+            
             
             //check if exists
-            for(FacebookSport spo: user.getSports())
+            for(FacebookSport spo: getSports())
             {
                 SportDAO dao = new SportDAO();
                 FacebookSport read = dao.readFacebookSportByName(spo.getName());
                 spo.setValuesFrom(read);
             } 
-            //set
-            setSports(user.getSports());
+           
             
             
-            //remove duplicates
-            Set<FacebookActivity> a = new LinkedHashSet<FacebookActivity>();
-            a.addAll(user.getActivities());
-            user.getActivities().clear();
-            user.getActivities().addAll(a);
             
             //check if exists
-            for(FacebookActivity obj: user.getActivities())
+            for(FacebookActivity obj: getActivities())
             {
                 ActivityDAO dao = new ActivityDAO();
                 FacebookActivity read = dao.readFacebookActivityByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-            //set
-            setActivities(user.getActivities());
             
-            //remove duplicates
-            Set<FacebookGroup> gr = new LinkedHashSet<FacebookGroup>();
-            gr.addAll(user.getGroups());
-            user.getGroups().clear();
-            user.getGroups().addAll(gr);
+           
             
             //check if exists
-            for(FacebookGroup obj: user.getGroups())
+            for(FacebookGroup obj: getGroups())
             {
                 GroupDAO dao = new GroupDAO();
                 FacebookGroup read = dao.readFacebookGroupByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-            //set
-            setGroups(user.getGroups());
             
-            //remove duplicates
-            Set<FacebookInterest> i = new LinkedHashSet<FacebookInterest>();
-            i.addAll(user.getInterests());
-            user.getInterests().clear();
-            user.getInterests().addAll(i);
             
-            for(FacebookInterest obj: user.getInterests())
+            
+            for(FacebookInterest obj: getInterests())
             {
                 InterestDAO dao = new InterestDAO();
                 FacebookInterest read = dao.readFacebookInterestByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-            //set
-            setInterests(user.getInterests());
+           
             
-            //remove duplicates
-            Set<FacebookLike> l = new LinkedHashSet<FacebookLike>();
-            l.addAll(user.getLikes());
-            user.getLikes().clear();
-            user.getLikes().addAll(l);
             
-            for(FacebookLike obj: user.getLikes())
+            for(FacebookLike obj: getLikes())
             {
                 LikeDAO dao = new LikeDAO();
                 FacebookLike read = dao.readFacebookLikeByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-            //set
-            setLikes(user.getLikes());
+           
             
-            
-            //remove duplicates
-            Set<FacebookMovie> mo = new LinkedHashSet<FacebookMovie>();
-            mo.addAll(user.getMovies());
-            user.getMovies().clear();
-            user.getMovies().addAll(mo);
-            
-            for(FacebookMovie obj: user.getMovies())
+           
+            for(FacebookMovie obj: getMovies())
             {
                 MovieDAO dao = new MovieDAO();
                 FacebookMovie read = dao.readFacebookMovieByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-            //set
-            setMovies(user.getMovies());
             
-            //remove duplicates
-            Set<FacebookMusic> mu = new LinkedHashSet<FacebookMusic>();
-            mu.addAll(user.getMusic());
-            user.getMusic().clear();
-            user.getMusic().addAll(mu);
             
-            for(FacebookMusic obj: user.getMusic())
+            
+            for(FacebookMusic obj: getMusic())
             {
                 MusicDAO dao = new MusicDAO();
                 FacebookMusic read = dao.readFacebookMusicByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-            //set
-            setMusic(user.getMusic());
             
-            //remove duplicates
-            Set<FacebookTelevision> t = new LinkedHashSet<FacebookTelevision>();
-            t.addAll(user.getTelevision());
-            user.getTelevision().clear();
-            user.getTelevision().addAll(t);
             
-            for(FacebookTelevision obj: user.getTelevision())
+            
+            for(FacebookTelevision obj: getTelevision())
             {
                 TelevisionDAO dao = new TelevisionDAO();
                 FacebookTelevision read = dao.readFacebookTelevisionByName(obj.getName());
                 obj.setValuesFrom(read);
             }
             
-            //set
-            setTelevision(user.getTelevision());
+           
+           
             
-            //remove duplicates
-            Set<FacebookGame> ga = new LinkedHashSet<FacebookGame>();
-            ga.addAll(user.getGames());
-            user.getGames().clear();
-            user.getGames().addAll(ga);
-            
-            for(FacebookGame obj: user.getGames())
+            for(FacebookGame obj: getGames())
             {
                 GameDAO dao = new GameDAO();
                 FacebookGame read = dao.readFacebookGameByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-            //set
-            setGames(user.getGames());
             
+           
             
-            //remove duplicates
-            Set<FacebookBook> b = new LinkedHashSet<FacebookBook>();
-            b.addAll(user.getBooks());
-            user.getBooks().clear();
-            user.getBooks().addAll(b);
-            
-            for(FacebookBook obj: user.getBooks())
+            for(FacebookBook obj: getBooks())
             {
                 BookDAO dao = new BookDAO();
                 FacebookBook read = dao.readFacebookBookByName(obj.getName());
                 obj.setValuesFrom(read);
             }
              
-            //set
-            setBooks(user.getBooks());
-            
-            
-        }
+          
     }
-
+    
     /**
      * @return the works
      */
