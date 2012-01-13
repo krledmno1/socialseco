@@ -70,7 +70,7 @@ public void populateMappings(String json)
             {
                 ins.setValue(arrayInstanceMappings[j].getKey(),arrayInstanceMappings[j].getValue().getAsString());
             }
-            questionInstances.add(ins);
+            getQuestionInstances().add(ins);
         }       
 
 
@@ -145,7 +145,7 @@ public void populateMappings(String json)
      * @param selectedUsers the selectedUsers to set
      */
     public void setSelectedUsers(String[] selectedUsers) {
-        this.selectedUsers = selectedUsers;
+        this.setSelectedUsers(selectedUsers);
     }
 
     /**
@@ -232,5 +232,20 @@ public void populateMappings(String json)
         this.when = when;
     }
 
+    /**
+     * @return the questionInstances
+     */
+    public List<Instance> getQuestionInstances() {
+        return questionInstances;
+    }
+
+    /**
+     * @param questionInstances the questionInstances to set
+     */
+    public void setQuestionInstances(List<Instance> questionInstances) {
+        this.questionInstances = questionInstances;
+    }
+
+   
 
 }
