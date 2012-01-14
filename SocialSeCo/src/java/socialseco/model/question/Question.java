@@ -9,7 +9,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -45,16 +47,18 @@ public class Question {
 public void populateMappings(String json)
 {
         JsonParser parser = new JsonParser();
-        JsonElement el = parser.parse(json);
-        JsonObject obj = el.getAsJsonObject();
+        JsonObject obj = parser.parse(json).getAsJsonObject();
         JsonObject schemaObj = obj.get("schema").getAsJsonObject();
-        Set<Entry<String,JsonElement>> mappings = schemaObj.entrySet();
-        Entry<String,JsonElement> [] arrayMappings = (Entry<String,JsonElement> [])mappings.toArray();
+        Set<Map.Entry<String,JsonElement>> mappings = schemaObj.entrySet();
         
-        for(int i = 0;i<arrayMappings.length;i++)
+        Iterator<Entry<String,JsonElement>> it = mappings.iterator();
+        while (it.hasNext())
         {
-            questionSchema.setValue(arrayMappings[i].getKey(),arrayMappings[i].getValue().getAsString());
+            Entry<String,JsonElement> entry = it.next();
+            questionSchema.setValue(entry.getKey(),entry.getValue().getAsString());
         }
+        
+       
         
         JsonArray instanceObj = obj.get("instances").getAsJsonArray();
         
@@ -63,13 +67,16 @@ public void populateMappings(String json)
             JsonObject instance = instanceObj.get(i).getAsJsonObject();
             
             Set<Entry<String,JsonElement>> instanceMappings = instance.entrySet();
-            Entry<String,JsonElement> [] arrayInstanceMappings = (Entry<String,JsonElement> [])instanceMappings.toArray();
+           
+            Iterator<Entry<String,JsonElement>> insit = instanceMappings.iterator();
             
             Instance ins = new Instance();
-            for(int j= 0;j<arrayInstanceMappings.length;j++)
+            while(insit.hasNext())
             {
-                ins.setValue(arrayInstanceMappings[j].getKey(),arrayInstanceMappings[j].getValue().getAsString());
+                Entry<String,JsonElement> insentry = insit.next();
+                ins.setValue(insentry.getKey(),insentry.getValue().getAsString());
             }
+            
             getQuestionInstances().add(ins);
         }       
 
