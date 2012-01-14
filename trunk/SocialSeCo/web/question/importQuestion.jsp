@@ -41,6 +41,10 @@ if ((contentType != null))
                 
                 String json = new String(dataBytes);
                
+                int begin = json.indexOf('{');
+                int end = json.lastIndexOf('}');
+                json = json.substring(begin, end+1);
+                
                 Question q = QuestionImporter.parseQuestion(json);
                 q.populateMappings(json);
                 
@@ -61,6 +65,6 @@ response.sendRedirect("questionList.jsp");
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        
     </body>
 </html>
