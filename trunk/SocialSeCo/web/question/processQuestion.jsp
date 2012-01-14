@@ -15,17 +15,17 @@
 <%
 List<Question> questions = (List<Question>)session.getAttribute("questions");
 
-if(questions!=null)
+if(questions==null)
 {
     questions = new ArrayList<Question>();
 }
 
-String opId = session.getAttribute("opid").toString();
-String question = session.getAttribute("question").toString();
-String desc = session.getAttribute("desc").toString();
+String opId = request.getParameter("opid")!=null ? request.getParameter("opid").toString() : null;
+String question = request.getParameter("question")!=null ? request.getParameter("question").toString() : null;
+String desc = request.getParameter("desc")!=null ? request.getParameter("desc").toString() : null;
 
-int cols = Integer.parseInt(session.getAttribute("cols").toString());
-int rows = Integer.parseInt(session.getAttribute("rows").toString());
+int cols = Integer.parseInt(request.getParameter("cols").toString());
+int rows = Integer.parseInt(request.getParameter("rows").toString());
 
 if(!opId.isEmpty() && !question.isEmpty() && cols!=0 && rows!=0)
 {
@@ -36,27 +36,25 @@ if(!opId.isEmpty() && !question.isEmpty() && cols!=0 && rows!=0)
     Schema questionSchema = new Schema();
     List<Instance> questionInstances = new ArrayList<Instance>();
     
-    for(int i = 0; i<cols;i++)
+    for(int j = 0; j<rows;j++)
     {
-        for(int j = 0; j<rows;j++)
+        Instance ins = new Instance();
+        for(int i = 0; i<cols;i++)
         {
-            if(i==0)
+            if(j==0)
             {
-                
-                String name = session.getAttribute("schema_"+String.valueOf(i)).toString();
-                String type = session.getAttribute("type_"+String.valueOf(i)).toString();
+                String name = request.getParameter("schema_"+String.valueOf(i))!=null ? request.getParameter("schema_"+String.valueOf(i)).toString() : null;
+                String type = request.getParameter("type_"+String.valueOf(i))!=null ? request.getParameter("type_"+String.valueOf(i)).toString() : null;
                 questionSchema.setValue(name, type);
             }
-            else
-            {
-                String name = questionSchema.getKeys().get(i);
-                String value = session.getAttribute("cell_"+String.valueOf(i)+"_"+String.valueOf(j)).toString();;
-                Instance ins = new Instance();
-                ins.setValue(name, value);
-                questionInstances.add(ins);
-            }
+           
+                String field = questionSchema.getKeys().get(i);
+                String value = request.getParameter("cell_"+String.valueOf(j)+"_"+String.valueOf(i))!=null ? request.getParameter("cell_"+String.valueOf(j)+"_"+String.valueOf(i)).toString() : null;
+                ins.setValue(field, value);
+           
 
         }
+        questionInstances.add(ins);
     }
     q.setQuestionSchema(questionSchema);
     q.setQuestionInstances(questionInstances);
@@ -64,7 +62,7 @@ if(!opId.isEmpty() && !question.isEmpty() && cols!=0 && rows!=0)
     questions.add(q);
     
     session.setAttribute("questions", questions);
-    response.sendRedirect("createQuestion.jsp");
+    response.sendRedirect("questionList.jsp");
 }
 %>
 
