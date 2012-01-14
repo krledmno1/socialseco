@@ -15,6 +15,7 @@ public class KeyValueMapping {
    private List<KeyValue> values;
 
     public KeyValueMapping() {
+        values = new ArrayList<KeyValue>();
     }
 
    public List<String> getKeys()

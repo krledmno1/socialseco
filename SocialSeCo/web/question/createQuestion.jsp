@@ -1,25 +1,7 @@
-<%-- 
-    Document   : createQuestion
-    Created on : Jan 13, 2012, 6:45:44 PM
-    Author     : krle
---%>
 
-<%@page import="socialseco.model.question.Instance"%>
-<%@page import="socialseco.model.question.KeyValue"%>
-<%@page import="socialseco.model.question.KeyValueMapping"%>
-<%@page import="java.util.List"%>
-<%@page import="socialseco.model.question.Question"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
-<%
-List<Question> obj = (List<Question>)session.getAttribute("questions");
-boolean empty = true;
-if(obj!=null)
-{
-    empty = false;
-}
 
-%>
 
 
 <html>
@@ -27,69 +9,119 @@ if(obj!=null)
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Create question</title>
         <script>
+
+		
             function addColumn()
             {
-                var table = document.getElementById("schema");
-                
+		var table = document.getElementById("schema");
                 var refChild = document.getElementById("button");
                 var schemaNode = document.createElement("th");
-                var thNode = document.createElement("input")
-                thNode.setAttribute("type", "text");
-                thNode.setAttribute("name", "schema_"+ table.childNodes().item(0).childNodes().length-1);
-                thNode.addEventListener("onchange", addRow, false);
+                var thNode = document.createElement("input");
+		var num = eval(document.getElementById("dimc").value);             
+		var numrows = eval(document.getElementById("dimr").value);
+
+		thNode.setAttribute("type", "text");
+                thNode.setAttribute("name", "schema_"+ num );		
+                thNode.onclick = addRow;
                 schemaNode.appendChild(thNode);
                 var br = document.createElement("br");
                 schemaNode.appendChild(br);
                 
+		
+
                 var thNode2 = document.createElement("input");
                 thNode2.setAttribute("type", "text");
-                thNode2.setAttribute("name", "type_"+ table.childNodes().item(0).childNodes().length-1);
-                thNode2.addEventListener("onchange", addRow, false);
+                thNode2.setAttribute("name", "type_"+ num);
+                thNode2.onclick = addRow;
                 schemaNode.appendChild(thNode2);
                 
-                table.childNodes().item(0).insertBefore(schemaNode, refChild);
-                for (i=1;i<=table.childNodes().length();i++)
+		
+		document.getElementById("tr_0").insertBefore(schemaNode, refChild);
+		
+			
+
+                for (i=1;i<numrows+1;i++)
                 {
-                   
+			
                     var newTd = document.createElement("td");
                     var newInput =  document.createElement("input");
                     newInput.setAttribute("type", "text");
-                    newInput.setAttribute("name", "cell_"+ i +"_"+ table.childNodes().item(i).childNodes().length);
-                    newInput.addEventListener("onChange", addRow, false);
+                    newInput.setAttribute("name", "cell_"+ (i-1) +"_"+ num);
+                    newInput.onclick = addRow;
                     newTd.appendChild(newInput);
-                    table.childNodes().item(i).appendChild(newTd);
+		    document.getElementById("tr_"+i).appendChild(newTd);
                 }
+
+		
                 
-                var num = document.getElementById("dimc").getAttribute("value");
+                
                 num++;
-                document.getElementById("dimc").setAttribute("value", num);
+                document.getElementById("dimc").value=num;
             }
             
             function addRow()
             {
-                var table = document.getElementById("schema");
-                if(table.lastChild==this.parentNode)
+		  
+		var table = document.getElementById("schema");
+                var currentTR = document.getElementById("tr_"+numrows);
+		 var numrows = eval(document.getElementById("dimr").value);
+		var numcols = eval(document.getElementById("dimc").value);
+
+		 if("tr_"+numrows===this.parentNode.parentNode.id)
                 {
-  
-                   
-                   
+  			
                         var newTR = document.createElement("tr");
-                        for(i=0;i<table.firstChild.childNodes().length()-1; i++)
+			newTR.id = "tr_"+(numrows+1);
+                        var dummyTD = document.createElement("td");
+                        newTR.appendChild(dummyTD);
+                        for(i=0;i<numcols; i++)
                         {
                             var newTD = document.createElement("td");
                             var newInput =  document.createElement("input");
                             newInput.setAttribute("type", "text");
-                            newInput.setAttribute("name", "cell_"+ table.childNodes().length() +"_"+ i);
-                            newInput.addEventListener("onChange", addRow, false);
+                            newInput.setAttribute("name", "cell_"+ numrows +"_"+ i);
+                            newInput.onclick = addRow;
                             newTD.appendChild(newInput);
                             newTR.appendChild(newTD);
                         }
-                        table.appendChild(newTR);
+                        table.lastChild.appendChild(newTR);
                         
-                        var num = document.getElementById("dimr").getAttribute("value");
-                        num++;
-                        document.getElementById("dimr").setAttribute("value", num);
+                       
+                        numrows++;
+                        document.getElementById("dimr").value = numrows;
                     
+                }
+                
+            }
+            
+            function removeColumn()
+            {
+                var num = eval(document.getElementById("dimc").value); 
+                if(num>0)
+                {
+               
+                    var numrows = eval(document.getElementById("dimr").value);
+                    var firstTR = document.getElementById("tr_0");
+                    var refChild = document.getElementById("button");
+                    firstTR.removeChild(refChild.previousSibling);
+
+                    for(i=1;i<numrows+1; i++)
+                    {
+                        var currentTR = document.getElementById("tr_"+i);
+                        currentTR.removeChild(currentTR.lastChild);
+                    }
+
+                     num--;
+                    document.getElementById("dimc").value=num;
+                    if(num==0)
+                    {
+                        var table = document.getElementById("schema");
+                        for(i=2;i<numrows+1; i++)
+                        {
+                            table.lastChild.removeChild(document.getElementById("tr_"+i));
+                        }
+                        document.getElementById("dimr").value=1;
+                    }
                 }
             }
         </script>
@@ -100,27 +132,37 @@ if(obj!=null)
             <a href="../">Back</a>
          </div>
         <div id="question">
-            <form action="processQuestion.jsp" method="post">
-                <div>Operation ID: <input type="text" value ="" name="opid"/> * </div>
+            <form action="processQuestion.jsp" method="get">
+                <div>Operation ID: <input type="text" value ="" name="opid" /> * </div>
                 <div>Question: <input type="text" value ="" name="question"/> * </div>
                 <div>Description: <input type="text" value ="" name="desc"/> </div>
                 <div>Schema: * </div>
                 <table id="schema">
-                    <tr>
+                    <tr id="tr_0">
+                        <th>
+                    <div>Name: </div>
+                    <br/>
+                    <div>Type: </div>
+                        </th>
                         <th id="button">
-                            <input type="button" value="add" name="columnAdder" onclick="addColumn" /> 
+                            <input type="button" value="Append" name="columnAdder" onclick="addColumn()" /> 
+                            <br/>
+                            <input type="button" value="Remove" name="columnAdder" onclick="removeColumn()" /> 
+                            
                         </th>
                         
                     </tr>
-                    <tr>
-                        
+                    <tr id="tr_1">
+                        <td>
+                            <div><b>Instances:</b></div>
+                        </td>
                         
                     </tr>
                 </table>
                 
                 <div> <input type="submit" name="submit" value="insert" /> </div>
                 <div><input id="dimc" type="hidden" name="cols" value="0" /> </div>
-                <div><input id="dimr" type="hidden" name="rows" value="0" /> </div>
+                <div><input id="dimr" type="hidden" name="rows" value="1" /> </div>
                 
                 <div> <p>* - mandatory fields  </p> </div>
             </form>
@@ -136,41 +178,6 @@ if(obj!=null)
         </div>
         
         
-        <h1> Already created questions </h1>
-        <%
-        if(!empty)
-        {
-        %>
-        
-        <%for(Question q:obj){ %>
-        <div> Operation ID:  <%= q.getOperationID()%> </div>
-        <div> Question:  <%= q.getQuestion()%> </div>
-        <div> Description: <%=q.getDescription()%></div>
-        <table>
-            <tr>
-                <% for(KeyValue k:q.getQuestionSchema().getValues()){ %>
-                <th> <b> <%=k.getKey()%> </b> </th>
-                <%}%>
-            </tr>
-            <% for(Instance ins:q.getQuestionInstances()){ %>
-            <tr>
-                <% for(KeyValue val: ins.getValues()){ %>
-                <td><%=val.getValue() %></td>
-                <% } %>
-            </tr>
-            <% } %>
-            
-            
-        </table>
-        
-        
-            <%}%>
-        <%}
-        else
-       {%>
        
-       <div> There are no questions in current session </div>
-       
-       <% } %>
     </body>
 </html>

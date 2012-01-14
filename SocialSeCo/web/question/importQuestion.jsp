@@ -14,7 +14,7 @@
 <%
 List<Question> questions = (List<Question>)session.getAttribute("questions");
 
-if(questions!=null)
+if(questions==null)
 {
     questions = new ArrayList<Question>();
 }
@@ -50,7 +50,7 @@ if ((contentType != null))
 }
 
 session.setAttribute("questions", questions);
-response.sendRedirect("createQuestion.jsp");
+response.sendRedirect("questionList.jsp");
 
 %>
 
