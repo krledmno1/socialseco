@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import socialseco.model.facebook.FacebookUser;
+
+import socialseco.model.facebook.*;
 import socialseco.model.linkedin.LinkedinUser;
 import socialseco.model.question.Instance;
 import socialseco.model.question.Question;
@@ -158,12 +159,126 @@ public class Comparator {
     
     private String flatten(FacebookUser user)
     {
-        return null;    //TO DO
+        
+        String output = "";
+        
+        output += user.getBio();
+        output += " ";
+        
+        output += user.getHometown();
+        output += " ";
+        
+        output += user.getGender();
+        output += " ";
+        
+        output += user.getLocation();
+        output += " ";
+        
+        output += user.getReligion();
+        output += " ";
+        
+        for(FacebookActivity obj: user.getActivities())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookBook obj: user.getBooks())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookGame obj: user.getGames())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookGroup obj: user.getGroups())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookInterest obj: user.getInterests())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookLike obj: user.getLikes())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookMovie obj: user.getMovies())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookMusic obj: user.getMusic())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookSport obj: user.getSports())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookTelevision obj: user.getTelevision())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        for(FacebookEducation obj: user.getEducation())
+        {
+            output += obj.getSchool();
+            output += " ";
+            output += obj.getType();
+            output += " ";
+            
+            for(FacebookConcentration con: obj.getConecentration())
+            {    
+                output += con.getName();
+                output += " ";
+            }   
+        }
+        
+        for(FacebookWork obj: user.getWorks())
+        {
+            output += obj.getEmployer();
+            output += " ";
+            output += obj.getPosition();
+            output += " ";
+        }
+       
+        for(FacebookLanguage obj: user.getLanguages())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        
+        output = preprocess(output);
+        
+        return output;
+        
     }
     
     private String flatten(LinkedinUser user)
     {
-        return null;    //TO DO
+        String output = "";
+        
+        //flatten linkedin
+        
+        output = preprocess(output);
+        return output;
     }
     
     
