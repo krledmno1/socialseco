@@ -19,6 +19,8 @@
     <mapping class="socialseco.model.User"/>
     <mapping class="socialseco.model.linkedin.LinkedinUser"/>
     <mapping class="socialseco.model.linkedin.LinkedinLanguage"/>
+    <mapping class="socialseco.model.linkedin.LinkedinEducation"/>
+    <mapping class="socialseco.model.linkedin.LinkedinDate"/>
     <mapping class="socialseco.model.facebook.FacebookUser"/>
     <mapping class="socialseco.model.facebook.FacebookActivity"/>
     <mapping class="socialseco.model.facebook.FacebookBook"/>

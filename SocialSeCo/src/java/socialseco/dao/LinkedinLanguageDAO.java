@@ -11,6 +11,6 @@ import socialseco.model.linkedin.LinkedinLanguage;
  * @author damian
  */
 public class LinkedinLanguageDAO
-    extends GenericDAO<LinkedinLanguage, Long> {
+    extends GenericLinkedinDAO<LinkedinLanguage, Long> {
     
 }
