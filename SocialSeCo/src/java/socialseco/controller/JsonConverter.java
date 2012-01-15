@@ -217,6 +217,20 @@ public class JsonConverter {
                 fbUser.getBooks().add(book);
             }
         }
+        
+        
+         if(user.getLanguages()!=null)
+        {
+            for(i=0;i<user.getLanguages().length;i++)
+            {
+                FacebookLanguage lan = new FacebookLanguage();
+               // spo.setId(Long.parseLong(user.getSports()[i].getId()));
+                lan.setName(user.getLanguages()[i].getName().toLowerCase());
+                fbUser.getLanguages().add(lan);
+            }
+        }
+        
+        
         return fbUser;
     }
     

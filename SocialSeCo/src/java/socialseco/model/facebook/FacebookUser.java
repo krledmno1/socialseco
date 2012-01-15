@@ -73,6 +73,8 @@ public class FacebookUser
     @ManyToMany(cascade=CascadeType.ALL)
     private List<FacebookBook> books;
 
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<FacebookLanguage> languages;
     
     public FacebookUser() {
         
@@ -88,6 +90,7 @@ public class FacebookUser
         television = new ArrayList<FacebookTelevision>();
         games = new ArrayList<FacebookGame>();
         books = new ArrayList<FacebookBook>();
+        languages = new ArrayList<FacebookLanguage>();
           
     }
 
@@ -231,6 +234,8 @@ public class FacebookUser
          
             setBooks(user.getBooks());
             
+            setLanguages(user.getLanguages());
+            
             
         }
     }
@@ -328,6 +333,13 @@ public class FacebookUser
             b.addAll(getBooks());
             getBooks().clear();
             getBooks().addAll(b);
+            
+            //remove duplicates
+            Set<FacebookLanguage> la = new LinkedHashSet<FacebookLanguage>();
+            la.addAll(getLanguages());
+            getLanguages().clear();
+            getLanguages().addAll(la);
+            
     }
     
     public void updateReferences()
@@ -450,6 +462,13 @@ public class FacebookUser
                 obj.setValuesFrom(read);
             }
              
+            
+            for(FacebookLanguage obj: getLanguages())
+            {
+                LanguageDAO dao = new LanguageDAO();
+                FacebookLanguage read = dao.readFacebookLanguageByName(obj.getName());
+                obj.setValuesFrom(read);
+            }
           
     }
     
@@ -619,5 +638,19 @@ public class FacebookUser
      */
     public void setBooks(List<FacebookBook> books) {
         this.books = books;
+    }
+
+    /**
+     * @return the languages
+     */
+    public List<FacebookLanguage> getLanguages() {
+        return languages;
+    }
+
+    /**
+     * @param languages the languages to set
+     */
+    public void setLanguages(List<FacebookLanguage> languages) {
+        this.languages = languages;
     }
 }

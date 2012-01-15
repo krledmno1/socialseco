@@ -19,6 +19,7 @@ public class JsonUser extends JsonUserSimple {
     private Hometown hometown;
     private Location location;
     private Work [] work; 
+    private Language [] languages;
     private String bio;
     private String gender;
     private String religion;
@@ -106,9 +107,29 @@ public class JsonUser extends JsonUserSimple {
     public void setBook(JsonBooks book) {
         this.book = book;
     }
+
+    /**
+     * @return the languages
+     */
+    public Language[] getLanguages() {
+        return languages;
+    }
+
+    /**
+     * @param languages the languages to set
+     */
+    public void setLanguages(Language[] languages) {
+        this.languages = languages;
+    }
    
    
- 
+ public class Language extends JsonEntity
+ {
+
+        public Language() {
+        }
+     
+ }
     
     
     
