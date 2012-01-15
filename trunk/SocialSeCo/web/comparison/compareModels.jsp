@@ -32,6 +32,15 @@ if(obj!=null)
         <div id="nav">
         <a href="../">Back</a>
         </div>
+        
+        <%
+        String error = session.getAttribute("error")!=null ? session.getAttribute("error").toString() : null ;
+        if(error != null)
+        {            
+        %>
+        <br/>
+        <div style="color: red"> <%=error %> </div>
+        <% } %>
         <br/>
         <h2> Platform selection </h2>
         <form action="comparisonResults.jsp" method="post">
@@ -40,7 +49,14 @@ if(obj!=null)
                 <option value="linkedin" >LinkedIn</option>
             </select>
             
-            
+        <h2> Method selection </h2>
+            <select name="method">
+                <option value="letterPairSimilarity" >Letter pair similarity</option>
+            </select>
+        
+        <h2> Number of recommendations </h2>
+        <div>Top <input type="number" name="num" min="1" max="100" /> friends </div>
+        
         <h2> Question selection </h2>  
         <%
         if(!empty)
@@ -49,8 +65,9 @@ if(obj!=null)
         
         <%  int i = 0;
             for(Question q:obj){ %>
-        <input type="radio" name="question" value="<%=i+1%>"> Question <%=i++%><br>
+        <input type="radio" name="question" value="<%=i%>"> Question <%=i+1%><br>
         <br/>
+        <% i++; %>
         <div> Operation ID:  <%= q.getOperationID()%> </div>
         <div> Question:  <%= q.getQuestion()%> </div>
         <div> Description: <%=q.getDescription()%></div>
@@ -75,6 +92,8 @@ if(obj!=null)
         <br/>
         
             <%}%>
+            
+            <input type="submit" name="submit" value="Recommend" />
         <%}
         else
        {%>

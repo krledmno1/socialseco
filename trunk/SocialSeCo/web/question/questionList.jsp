@@ -39,7 +39,9 @@ if(obj!=null)
         
         <%int i = 1;
         for(Question q:obj){ %>
-        <div> Question <%=i++%> </div>
+        <br/>
+        <div> <b> Question <%=i++%> </b> </div>
+        <br/>
         <div> Operation ID:  <%= q.getOperationID()%> </div>
         <div> Question:  <%= q.getQuestion()%> </div>
         <div> Description: <%=q.getDescription()%></div>
