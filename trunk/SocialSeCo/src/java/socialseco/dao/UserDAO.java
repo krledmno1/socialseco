@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
 import socialseco.model.facebook.FacebookUser;
-import socialseco.model.linkedin.LinkedinUser;
+import socialseco.model.linkedin.*;
 import socialseco.model.User;
 
 /**
@@ -27,6 +27,13 @@ public class UserDAO
         List<LinkedinUser> list = getSession()
                 .createCriteria(LinkedinUser.class)
                 .list();
+        
+        for(LinkedinUser user:list){
+            for(LinkedinEducation education:user.getEducations())
+                education.getId();
+            for(LinkedinLanguage lang:user.getLanguages())
+                lang.getId();
+        }
         
         getSession().getTransaction().commit();
         

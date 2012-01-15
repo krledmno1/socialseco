@@ -19,9 +19,15 @@ public class LinkedinUser
 
     protected String linkedinId;
     protected String industry;
+    protected String headline;
+    protected String summary;
+    protected String honors;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    protected List<LinkedinLanguage> languages;
     
     @OneToMany(cascade=CascadeType.ALL)
-    protected List<LinkedinLanguage> languages;
+    protected List<LinkedinEducation> educations;
     
     public LinkedinUser(){
         languages = new ArrayList<LinkedinLanguage>();
@@ -42,6 +48,27 @@ public class LinkedinUser
         this.industry = industry;
     }
     
+    public String getHeadline() {
+        return headline;
+    }
+    public void setHeadline(String headline) {
+        this.headline = headline;
+    }
+    
+    public String getSummary() {
+        return summary;
+    }
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+    
+    public String getHonors() {
+        return honors;
+    }
+    public void setHonors(String honors) {
+        this.honors = honors;
+    }
+    
     public List<LinkedinLanguage> getLanguages(){
         return this.languages;
     }
@@ -52,13 +79,29 @@ public class LinkedinUser
         this.languages.add(language);
     }
     
+    public List<LinkedinEducation> getEducations(){
+        return this.educations;
+    }
+    public void setEducations(List<LinkedinEducation> educations){
+        this.educations = educations;
+    }
+    public void addEducation(LinkedinEducation education){
+        this.educations.add(education);
+    }
+    
     @Override
     public void setValuesFrom(User user){
         super.setValuesFrom(user);
         if (user instanceof LinkedinUser){
             LinkedinUser linkedinUser = (LinkedinUser)user;
+            setLinkedinId(linkedinUser.getLinkedinId());
             setIndustry(linkedinUser.getIndustry());
+            setHeadline(linkedinUser.getHeadline());
+            setSummary(linkedinUser.getSummary());
+            setHonors(linkedinUser.getHonors());
+            
             setLanguages(linkedinUser.getLanguages());
+            setEducations(linkedinUser.getEducations());
         }
     }
 }

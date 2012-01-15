@@ -63,12 +63,26 @@ public class GenericDAO<T, ID extends Serializable> {
         
         return lista;
     }
+    
+    public List<T> readByName(String name) {
+        getSession().beginTransaction();
+        
+        List<T> t = getSession()
+                .createCriteria(getPersistentClass())
+                .add(Restrictions.eq("name", name))
+                .list();
+        
+        getSession().getTransaction().commit();
+        
+        return t;
+    }
 
     
     public T persist(T entity) {
         getSession().beginTransaction();
         
-        getSession().merge(entity);
+        //getSession().merge(entity);
+        getSession().saveOrUpdate(entity);
         
         getSession().getTransaction().commit();
         

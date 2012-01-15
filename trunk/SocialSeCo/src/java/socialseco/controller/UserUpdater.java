@@ -37,7 +37,9 @@ public class UserUpdater {
     }
     
     public void updateUsers(List<LinkedinUser> users) {
-        UserDAO dao = new UserDAO();
+        UpdateLinkedInUser updater = new UpdateLinkedInUser();
+        updater.updateUsers(users);
+        /*UserDAO dao = new UserDAO();
         
         for(LinkedinUser user_it: users){
             LinkedinUser read_user = dao.readLinkedinUsersByLinkedinId(user_it.getLinkedinId());
@@ -52,7 +54,7 @@ public class UserUpdater {
             } else {
                 dao.persist(user_it);
             }
-        }
+        }*/
     }
     
     

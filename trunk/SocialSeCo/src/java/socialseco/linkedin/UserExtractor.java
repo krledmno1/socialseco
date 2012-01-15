@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -20,6 +21,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+import socialseco.model.linkedin.LinkedinDate;
+import socialseco.model.linkedin.LinkedinEducation;
 import socialseco.model.linkedin.LinkedinLanguage;
 import socialseco.model.linkedin.LinkedinUser;
 
@@ -29,7 +32,7 @@ import socialseco.model.linkedin.LinkedinUser;
  */
 public class UserExtractor {
     private static final String PROTECTED_RESOURCE_URL =
-            "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,languages)";
+            "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,languages,educations)";
     
     private LinkedInAuthenticator authenticator;
     
@@ -51,6 +54,7 @@ public class UserExtractor {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         
         InputStream is = new ByteArrayInputStream(oauthResponse.getBody().getBytes("UTF-8"));
+        System.out.println(is.toString());
         Document doc = dBuilder.parse(is);
         doc.getDocumentElement().normalize();
         NodeList personList = doc.getElementsByTagName("person");
@@ -94,12 +98,59 @@ public class UserExtractor {
                     }
                 }
                 
+                // Education
+                List<LinkedinEducation> educations = new ArrayList<LinkedinEducation>();
+                NodeList educationList = personElement.getElementsByTagName("education");
+                for (int tempLang=0; tempLang < educationList.getLength(); tempLang++) {
+                    Node educationNode = educationList.item(tempLang);
+                    if (educationNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element educationElement = (Element) educationNode;
+                        
+                        String educationId = getTagValue("id", educationElement);
+                        
+                        String schoolName = getTagValue("school-name", educationElement);
+                        String fieldOfStudy = getTagValue("field-of-study", educationElement);
+                        String degree = getTagValue("degree", educationElement);
+                        String activities = getTagValue("activities", educationElement);
+                        String notes = getTagValue("notes", educationElement);
+                        
+                        LinkedinEducation education = new LinkedinEducation();
+                        education.setLinkedinId(educationId);
+                        education.setSchoolName(schoolName);
+                        education.setFieldOfStudy(fieldOfStudy);
+                        education.setDegree(degree);
+                        education.setActivities(activities);
+                        education.setNotes(notes);
+                        
+                        NodeList startDateList = educationElement.getElementsByTagName("start-date");
+                        if(startDateList.getLength() > 0){
+                            Node startDateNode = startDateList.item(0);
+                            if (startDateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element startDateElement = (Element) startDateNode;
+                                String year = getTagValue("year", startDateElement);
+                                String month = getTagValue("month", startDateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate startDate = new LinkedinDate();
+                                    startDate.setYear(year);
+                                    if(month != null && !month.isEmpty())
+                                        startDate.setMonth(month);
+                                    education.setStartDate(startDate);
+                                }
+                            }
+                        }
+                        
+                        educations.add(education);
+                    }
+                }
+                
                 user = new LinkedinUser();
                 user.setLinkedinId(id);
                 user.setName(first_name);
                 user.setSurname(last_name);
                 user.setIndustry(industry);
                 user.setLanguages(languages);
+                user.setEducations(educations);
                 
                 ret.add(user);
             }
@@ -129,7 +180,9 @@ public class UserExtractor {
         if (item_0 == null) return null;
 	
         NodeList nlList = item_0.getChildNodes();
+        if(nlList == null || nlList.getLength() == 0) return null;
         Node nValue = (Node) nlList.item(0);
-	return nValue.getNodeValue();
+	if(nValue == null) return null;
+        return nValue.getNodeValue();
     }
 }
