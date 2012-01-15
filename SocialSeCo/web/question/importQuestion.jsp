@@ -4,7 +4,6 @@
     Author     : krle
 --%>
 
-<%@page import="socialseco.controller.QuestionImporter"%>
 <%@page import="java.io.DataInputStream"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="socialseco.model.question.Question"%>
@@ -45,7 +44,7 @@ if ((contentType != null))
                 int end = json.lastIndexOf('}');
                 json = json.substring(begin, end+1);
                 
-                Question q = QuestionImporter.parseQuestion(json);
+                Question q = Question.parseQuestion(json);
                 q.populateMappings(json);
                 
                 questions.add(q);
