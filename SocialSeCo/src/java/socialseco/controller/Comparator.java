@@ -22,12 +22,32 @@ import socialseco.model.question.Schema;
  * @author krle
  */
 public class Comparator {
+    
+    private String platform; 
+    private String method;
+    private int num;
 
     public Comparator() {
         
     }
     
-    public Question compareBagOfWords(Question q, List<FacebookUser> users, int num)
+    public Question compare(Question q, Object o)
+    {
+        Question ret = null;
+        if(platform.equals("facebook"))
+        {
+            if(method.equals("letterPairSimilarity"))
+                ret=compareBagOfWords(q, (List<FacebookUser>)o, getNum());
+        }
+        if(platform.equals("facebook"))
+        {
+            if(method.equals("letterPairSimilarity"))
+                ret=compareBagOfWords(q, (ArrayList<LinkedinUser>)o, getNum());
+        }
+        return ret;
+    }
+    
+    private Question compareBagOfWords(Question q, List<FacebookUser> users, int num)
     {
         String questionBag = flatten(q);
         Map<Long,Double> userEvals = new HashMap<Long, Double>();
@@ -64,7 +84,7 @@ public class Comparator {
         return q;
     }
     
-    public Question compareBagOfWords(Question q, ArrayList<LinkedinUser> users, int num)
+    private Question compareBagOfWords(Question q, ArrayList<LinkedinUser> users, int num)
     {
         String questionBag = flatten(q);
         Map<Long,Double> userEvals = new HashMap<Long, Double>();
@@ -225,6 +245,48 @@ public class Comparator {
         
         
         return max;
+    }
+
+    /**
+     * @return the platform
+     */
+    public String getPlatform() {
+        return platform;
+    }
+
+    /**
+     * @param platform the platform to set
+     */
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    /**
+     * @return the method
+     */
+    public String getMethod() {
+        return method;
+    }
+
+    /**
+     * @param method the method to set
+     */
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    /**
+     * @return the num
+     */
+    public int getNum() {
+        return num;
+    }
+
+    /**
+     * @param num the num to set
+     */
+    public void setNum(int num) {
+        this.num = num;
     }
     
 }

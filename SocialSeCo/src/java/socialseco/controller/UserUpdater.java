@@ -19,6 +19,23 @@ import socialseco.model.linkedin.LinkedinUser;
  */
 public class UserUpdater {
     
+    
+    public Object totalRecall(String platform)
+    {
+        Object ret = null;
+        UserDAO dao = new UserDAO();
+        if(platform.equals("facebook"))
+        {
+            ret = dao.readAllFacebookUsers();
+            //TO DO obtain other data: activities, likes...
+        }
+        if(platform.equals("linkedin"))
+        {
+            ret = dao.readAllLinkedinUsers();
+        }
+        return ret;
+    }
+    
     public void updateUsers(List<LinkedinUser> users) {
         UserDAO dao = new UserDAO();
         
