@@ -67,5 +67,12 @@
             <a href="./question/questionList.jsp">Saved questions</a>
         </div>
         
+        
+         <!-- RECOMMENDATION -->
+        <h2>Friend recommendation</h2>
+        <div id="link">
+            <a href="./comparison/compareModels.jsp">Recommend friends</a>
+        </div>
+        
     </body>
 </html>

@@ -127,12 +127,14 @@
         </script>
     </head>
     <body>
-        <h1>Fill in question info or import</h1>
+        <h1>Create question</h1>
          <div id="nav">
             <a href="../">Back</a>
          </div>
+        <br/>
+        <h2>Create question manually</h2>
         <div id="question">
-            <form action="processQuestion.jsp" method="get">
+            <form action="processQuestion.jsp" method="post">
                 <div>Operation ID: <input type="text" value ="" name="opid" /> * </div>
                 <div>Question: <input type="text" value ="" name="question"/> * </div>
                 <div>Description: <input type="text" value ="" name="desc"/> </div>
@@ -169,6 +171,7 @@
         </div>
         <br/>
         <br/>
+        <h2>Import question from json</h2>
         <div id="import">
             <form action="importQuestion.jsp" method="post" enctype="multipart/form-data">
                 <input type="file" name="importFile" size="40" />

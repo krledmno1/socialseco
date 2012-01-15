@@ -4,6 +4,7 @@
  */
 package socialseco.model.question;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,6 +31,7 @@ public class Question {
     private List<Instance> questionInstances;
 
     private String [] selectedUsers;  //this is what we have to populate
+    private String [] confidence;
 
     //additiona stuff, not important
     private String userID;            
@@ -44,6 +46,13 @@ public class Question {
         questionInstances = new ArrayList<Instance>();
     }
 
+     public static Question parseQuestion(String json)
+    {
+        Gson gson = new Gson();
+        return gson.fromJson(json, Question.class);
+    }
+    
+    
 public void populateMappings(String json)
 {
         JsonParser parser = new JsonParser();
@@ -251,6 +260,20 @@ public void populateMappings(String json)
      */
     public void setQuestionInstances(List<Instance> questionInstances) {
         this.questionInstances = questionInstances;
+    }
+
+    /**
+     * @return the confidence
+     */
+    public String[] getConfidence() {
+        return confidence;
+    }
+
+    /**
+     * @param confidence the confidence to set
+     */
+    public void setConfidence(String[] confidence) {
+        this.confidence = confidence;
     }
 
    
