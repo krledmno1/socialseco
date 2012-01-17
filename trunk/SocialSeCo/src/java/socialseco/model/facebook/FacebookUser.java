@@ -10,9 +10,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 import socialseco.dao.facebookProperties.*;
 import socialseco.model.User;
 
@@ -29,18 +26,20 @@ public class FacebookUser
     private String hometown;
     private String location;
     
-    @ManyToMany(cascade=CascadeType.ALL) 
+    
     //@GenericGenerator(name="uuid-gen", strategy = "uuid")
     //@CollectionId(columns = @Column(name = "COL_ID"), type = @Type(type = "string"), generator = "uuid-gen") 
+    @ManyToMany(cascade=CascadeType.ALL)
     private List<FacebookWork> works;
     @Column(length=5000)
     private String bio;
     private String gender;
     private String religion;
     
-    @ManyToMany(cascade=CascadeType.ALL) 
+    
     //@GenericGenerator(name="uuid-gen", strategy = "uuid")
     //@CollectionId(columns = @Column(name = "COL_ID"), type = @Type(type = "string"), generator = "uuid-gen") 
+    @ManyToMany(cascade=CascadeType.ALL)
     private List<FacebookEducation> education;
     
     @ManyToMany(cascade=CascadeType.ALL)
@@ -272,6 +271,8 @@ public class FacebookUser
                 }
             }
            
+            /*
+            
             //remove duplicates
             Set<FacebookSport> s = new LinkedHashSet<FacebookSport>();
             s.addAll(getSports());
@@ -297,10 +298,10 @@ public class FacebookUser
             getInterests().addAll(i);
         
             //remove duplicates
-            Set<FacebookLike> l = new LinkedHashSet<FacebookLike>();
-            l.addAll(getLikes());
-            getLikes().clear();
-            getLikes().addAll(l);
+            //Set<FacebookLike> l = new LinkedHashSet<FacebookLike>();
+            //l.addAll(getLikes());
+            //getLikes().clear();
+            //getLikes().addAll(l);
             
             
              //remove duplicates
@@ -339,7 +340,7 @@ public class FacebookUser
             la.addAll(getLanguages());
             getLanguages().clear();
             getLanguages().addAll(la);
-            
+            */
     }
     
     public void updateReferences()
@@ -368,7 +369,7 @@ public class FacebookUser
             
             
             
-            
+            /*
             //check if exists
             for(FacebookSport spo: getSports())
             {
@@ -409,12 +410,12 @@ public class FacebookUser
            
             
             
-            for(FacebookLike obj: getLikes())
-            {
-                LikeDAO dao = new LikeDAO();
-                FacebookLike read = dao.readFacebookLikeByName(obj.getName());
-                obj.setValuesFrom(read);
-            }
+            //for(FacebookLike obj: getLikes())
+            //{
+            //    LikeDAO dao = new LikeDAO();
+            //    FacebookLike read = dao.readFacebookLikeByName(obj.getName());
+            //    obj.setValuesFrom(read);
+            //}
            
             
            
@@ -469,7 +470,7 @@ public class FacebookUser
                 FacebookLanguage read = dao.readFacebookLanguageByName(obj.getName());
                 obj.setValuesFrom(read);
             }
-          
+          */
     }
     
     /**

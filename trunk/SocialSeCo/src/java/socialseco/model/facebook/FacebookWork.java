@@ -11,17 +11,17 @@ import javax.persistence.*;
  *
  * @author krle
  */
+
+//@Table(name="FacebookWork",
+//        uniqueConstraints = @UniqueConstraint(columnNames={"employer", "position"}))
 @Entity
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames={"employer", "position"})
-})
 public class FacebookWork implements Serializable {
+    
+    @Id @GeneratedValue
+    private Long id;
     
     private String employer;
     private String position;
-    @Id @GeneratedValue
-    private Long id;
-
     
     @Override
     public boolean equals(Object obj)

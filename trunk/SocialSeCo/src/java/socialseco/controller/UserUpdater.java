@@ -26,7 +26,7 @@ public class UserUpdater {
         UserDAO dao = new UserDAO();
         if(platform.equals("facebook"))
         {
-            ret = dao.readAllFacebookUsers();
+            ret = dao.readAllFacebookUsers_without_transaction();
             //TO DO obtain other data: activities, likes...
         }
         if(platform.equals("linkedin"))

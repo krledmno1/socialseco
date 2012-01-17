@@ -35,9 +35,12 @@ comparator.setNum(Integer.parseInt(num));
 Question q = obj.get(Integer.parseInt(question));
 
 UserUpdater updater = new UserUpdater();
+UserDAO dao = new UserDAO();
+dao.beginConversation();
 Object o = updater.totalRecall(platform);
 
 Question result = comparator.compare(q, o);
+dao.endConversation();
 %>
 
 

@@ -65,6 +65,16 @@ public class UserDAO
         return list;
     }
     
+    public List<FacebookUser> readAllFacebookUsers_without_transaction() {
+        List<FacebookUser> list = getSession()
+                .createCriteria(FacebookUser.class)
+                .list();
+        
+        return list;
+    }
+    
+    
+    
     
     public FacebookUser readFacebookUsersById(String facebookId) {
         getSession().beginTransaction();
