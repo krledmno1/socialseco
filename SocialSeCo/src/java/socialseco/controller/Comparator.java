@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import socialseco.dao.UserDAO;
 import socialseco.model.facebook.*;
 import socialseco.model.linkedin.LinkedinUser;
 import socialseco.model.question.Instance;
@@ -35,6 +36,7 @@ public class Comparator {
     public Question compare(Question q, Object o)
     {
         Question ret = null;
+        
         if(platform.equals("facebook"))
         {
             if(method.equals("letterPairSimilarity"))
@@ -45,6 +47,7 @@ public class Comparator {
             if(method.equals("letterPairSimilarity"))
                 ret=compareBagOfWords(q, (ArrayList<LinkedinUser>)o, getNum());
         }
+        
         return ret;
     }
     
@@ -267,6 +270,7 @@ public class Comparator {
         
         output = preprocess(output);
         
+        
         return output;
         
     }
@@ -281,8 +285,16 @@ public class Comparator {
         return output;
     }
     
-    
     private String preprocess(String output) {
+        output = output.toLowerCase();
+        while(output.contains("  "))
+        {
+            output.replaceAll("  ", " ");
+        }
+        return output;
+    }
+    
+    private String preprocess2(String output) {
         output = output.toLowerCase();
         while(output.contains("  "))
         {

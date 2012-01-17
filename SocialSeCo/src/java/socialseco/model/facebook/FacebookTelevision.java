@@ -12,9 +12,9 @@ import javax.persistence.*;
  */
 @Entity
 public class FacebookTelevision implements Serializable {
-    @Id @GeneratedValue
+    @Id //@GeneratedValue
     private long Id;
-@Column(unique=true)
+//@Column(unique=true)
      private String name;
 
     

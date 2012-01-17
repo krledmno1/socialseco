@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 public class FacebookLike implements Serializable {
-    @Id @GeneratedValue
+    @Id //@GeneratedValue
     private Long id;
 
     public Long getId() {
@@ -22,8 +22,8 @@ public class FacebookLike implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-@Column(unique=true)
-     private String name;
+    //@Column(unique=true)
+    private String name;
 
     
     @Override

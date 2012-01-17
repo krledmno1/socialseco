@@ -12,11 +12,11 @@ import javax.persistence.*;
  */
 @Entity
 public class FacebookGame implements Serializable {
-    @Id @GeneratedValue
+    @Id //@GeneratedValue
     private Long id;
     
     
-     @Column(unique=true)
+    // @Column(unique=true)
      private String name;
 
     

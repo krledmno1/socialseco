@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 public class FacebookInterest implements Serializable {
-    @Id @GeneratedValue
+    @Id //@GeneratedValue
     private Long id;
 
     public Long getId() {
@@ -23,7 +23,7 @@ public class FacebookInterest implements Serializable {
         this.id = id;
     }
 
-    @Column(unique=true)
+    //@Column(unique=true)
      private String name;
 
     

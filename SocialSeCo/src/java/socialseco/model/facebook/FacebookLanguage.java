@@ -16,7 +16,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class FacebookLanguage implements Serializable {
-    @Id @GeneratedValue
+    @Id //@GeneratedValue
     private Long id;
 
     public Long getId() {
@@ -26,7 +26,7 @@ public class FacebookLanguage implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    @Column(unique=true)
+    //@Column(unique=true)
      private String name;
     
     

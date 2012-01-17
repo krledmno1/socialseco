@@ -35,5 +35,6 @@
     <mapping class="socialseco.model.facebook.FacebookSport"/>
     <mapping class="socialseco.model.facebook.FacebookTelevision"/>
     <mapping class="socialseco.model.facebook.FacebookWork"/>
+    <mapping class="socialseco.model.facebook.FacebookLanguage"/>
   </session-factory>
 </hibernate-configuration>
