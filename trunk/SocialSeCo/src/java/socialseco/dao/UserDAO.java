@@ -90,4 +90,28 @@ public class UserDAO
     }
 
     
+     public Object readUsersById(String id, String platform) {
+        getSession().beginTransaction();
+        
+        Object ret = null;
+        if(platform.equals("facebook"))
+        {
+        ret = getSession()
+                .createCriteria(FacebookUser.class)
+                .add(Restrictions.eq("id", Long.parseLong(id)))
+                .uniqueResult();
+        }
+        
+        if(platform.equals("linkedin"))
+        {
+            ret =  getSession()
+                .createCriteria(LinkedinUser.class)
+                .add(Restrictions.eq("id", Long.parseLong(id)))
+                .uniqueResult();
+        }
+        getSession().getTransaction().commit();
+        
+        return ret;
+    }
+    
 }

@@ -95,7 +95,7 @@ public class JsonConverter {
                     for(j=0;j<user.getEducation()[i].getConcentration().length;j++)
                     {
                         FacebookConcentration con = new FacebookConcentration();
-                        //con.setId(Long.parseLong(user.getEducation()[i].getConcentration()[j].getId()));
+                        con.setId(Long.parseLong(user.getEducation()[i].getConcentration()[j].getId()));
                         con.setName(user.getEducation()[i].getConcentration()[j].getName().toLowerCase());
                         edu.getConecentration().add(con);
                     }
