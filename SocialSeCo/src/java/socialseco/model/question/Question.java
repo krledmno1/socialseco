@@ -150,19 +150,7 @@ public void populateMappings(String json)
 
     
 
-    /**
-     * @return the selectedUsers
-     */
-    public String[] getSelectedUsers() {
-        return selectedUsers;
-    }
-
-    /**
-     * @param selectedUsers the selectedUsers to set
-     */
-    public void setSelectedUsers(String[] selectedUsers) {
-        this.setSelectedUsers(selectedUsers);
-    }
+   
 
     /**
      * @return the userID
@@ -274,6 +262,20 @@ public void populateMappings(String json)
      */
     public void setConfidence(String[] confidence) {
         this.confidence = confidence;
+    }
+
+    /**
+     * @return the selectedUsers
+     */
+    public String[] getSelectedUsers() {
+        return selectedUsers;
+    }
+
+    /**
+     * @param selectedUsers the selectedUsers to set
+     */
+    public void setSelectedUsers(String[] selectedUsers) {
+        this.selectedUsers = selectedUsers;
     }
 
    

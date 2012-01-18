@@ -13,12 +13,12 @@ import javax.persistence.*;
  */
 @Entity
 public class FacebookConcentration implements Serializable {
-    @Id @GeneratedValue
+    @Id //@GeneratedValue
     private Long id;
     
     
     
-     @Column(unique=true)
+    
      private String name;
     
     @Override

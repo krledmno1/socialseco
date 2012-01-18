@@ -4,6 +4,7 @@
     Author     : krle
 --%>
 
+<%@page import="socialseco.model.User"%>
 <%@page import="socialseco.controller.UserUpdater"%>
 <%@page import="socialseco.dao.UserDAO"%>
 <%@page import="socialseco.model.question.Question"%>
@@ -51,7 +52,18 @@ dao.endConversation();
     </head>
     <body>
         <h1>Recommended people</h1>
-        
+        <div id="nav">
+        <a href="../">Back</a>
+        </div>
+        <% int n = result.getSelectedUsers().length;
+        for(int i = 0;i<n;i++){ 
+        User u = (User)dao.readUsersById(result.getSelectedUsers()[i], platform);
+        %>
+                <br/>
+                <div>Id: <%=result.getSelectedUsers()[i] %>   with confidence: <%=Double.parseDouble(result.getConfidence()[i])*100 %>%  </div>
+                <div>Name: <%=u.getName()%> </div>
+                <div>Surname: <%=u.getSurname()%> </div>
+        <%}%>
     </body>
 </html>
 <%

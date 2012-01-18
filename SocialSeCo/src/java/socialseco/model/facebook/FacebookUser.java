@@ -354,7 +354,7 @@ public class FacebookUser
             }
            
             
-          
+          /*
             for(FacebookEducation edu: getEducation())
             {
                 
@@ -368,7 +368,7 @@ public class FacebookUser
             }
             
             
-            
+           */ 
             /*
             //check if exists
             for(FacebookSport spo: getSports())

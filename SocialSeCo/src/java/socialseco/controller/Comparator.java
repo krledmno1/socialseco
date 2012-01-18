@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import socialseco.dao.UserDAO;
 import socialseco.model.facebook.*;
 import socialseco.model.linkedin.LinkedinUser;
@@ -42,7 +44,7 @@ public class Comparator {
             if(method.equals("letterPairSimilarity"))
                 ret=compareBagOfWords(q, (List<FacebookUser>)o, getNum());
         }
-        if(platform.equals("facebook"))
+        if(platform.equals("linkedin"))
         {
             if(method.equals("letterPairSimilarity"))
                 ret=compareBagOfWords(q, (ArrayList<LinkedinUser>)o, getNum());
@@ -59,8 +61,11 @@ public class Comparator {
         for(FacebookUser user:users)
         {
             String userBag = flatten(user);
-            Double score = evaluateLetterPairSimilarity(questionBag,userBag);
-            userEvals.put(user.getId(), score);
+            if(!userBag.isEmpty())
+            {
+                Double score = evaluateLetterPairSimilarity(questionBag,userBag);
+                userEvals.put(user.getId(), score);
+            }
         }
         int k=0;
         if(num>userEvals.size())
@@ -139,7 +144,7 @@ public class Comparator {
         List<String> keys = q.getQuestionSchema().getKeys();
         for(String k:keys)
         {
-            output += q.getQuestionSchema().getValue(k);
+            output += k;
             output += " ";
         }
         
@@ -165,19 +170,19 @@ public class Comparator {
         
         String output = "";
         
-        output += user.getBio();
+        output += user.getBio()!=null ? user.getBio():"";
         output += " ";
         
-        output += user.getHometown();
+        output += user.getHometown()!=null ? user.getHometown():"";
         output += " ";
         
-        output += user.getGender();
+        output += user.getGender()!=null ? user.getGender():"";
         output += " ";
         
-        output += user.getLocation();
+        output += user.getLocation()!=null ? user.getLocation():"";
         output += " ";
         
-        output += user.getReligion();
+        output += user.getReligion()!=null ? user.getReligion():"";
         output += " ";
         
         for(FacebookActivity obj: user.getActivities())
@@ -269,7 +274,7 @@ public class Comparator {
         }
         
         output = preprocess(output);
-        
+            
         
         return output;
         
@@ -287,19 +292,23 @@ public class Comparator {
     
     private String preprocess(String output) {
         output = output.toLowerCase();
-        while(output.contains("  "))
-        {
-            output.replaceAll("  ", " ");
-        }
+        
+        Pattern pattern = Pattern.compile("\\s+");
+        Matcher matcher = pattern.matcher(output);
+        boolean check = matcher.find();
+        output = matcher.replaceAll(" ");
+      
+        output = stem(output);
+        
+        output = output.trim();
+        
+        
+        
         return output;
     }
     
-    private String preprocess2(String output) {
-        output = output.toLowerCase();
-        while(output.contains("  "))
-        {
-            output.replaceAll("  ", " ");
-        }
+    private String stem(String output) {
+        
         
         String [] words = output.split(" ");
         Stemmer stemmer = new Stemmer();
@@ -313,7 +322,7 @@ public class Comparator {
                 boolean cond = true;
                 for(int j = 0; j<word.length;j++)
                 {
-                    if(!Character.isLetter(word[i]))
+                    if(!Character.isLetter(word[j]))
                     {
                         cond = false;
                     }
