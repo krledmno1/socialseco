@@ -30,13 +30,20 @@ public class UpdateLinkedInUser {
             // some language is not already stored it will be when called to
             // getPersistedLanguage()
             List<LinkedinLanguage> languages = new ArrayList<LinkedinLanguage>();
-            
             for(LinkedinLanguage language_it:user_it.getLanguages()) {
                 LinkedinLanguage persisted_language = getPersistedLanguage(language_it);
                 languages.add(persisted_language);
             }
-            
             read_user.setLanguages(languages);
+            
+            // The same is done for the companies in the positions.
+            for(LinkedinPosition position_it:user_it.getPositions()){
+                if(position_it.getCompany() != null){
+                    LinkedinCompany persisted_company = getPersistedCompany(position_it.getCompany());
+                    position_it.setCompany(persisted_company);
+                }
+            }
+            
             dao.persist(read_user);
         }
     }
@@ -52,5 +59,18 @@ public class UpdateLinkedInUser {
             persisted_language = read_languages.get(0);
         }
         return persisted_language;
+    }
+    
+    private LinkedinCompany getPersistedCompany(LinkedinCompany company) {
+        LinkedinCompanyDAO companyDAO = new LinkedinCompanyDAO();
+        List<LinkedinCompany> read_companies = companyDAO.readByLinkedinId(company.getLinkedinId());
+        LinkedinCompany persisted_company;
+        
+        if(read_companies == null || read_companies.isEmpty()){
+            persisted_company = companyDAO.persist(company);
+        } else {
+            persisted_company = read_companies.get(0);
+        }
+        return persisted_company;
     }
 }

@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package socialseco.model.linkedin;
-
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -12,27 +11,23 @@ import javax.persistence.*;
  * @author damian
  */
 @Entity
-public class LinkedinEducation
+public class LinkedinPosition
     implements Serializable {
     
     @Id @GeneratedValue
     protected Long id;
     
     protected String linkedinId;
-    @Column(length=500)
-    protected String schoolName;
-    @Column(length=500)
-    protected String fieldOfStudy;
-    @Column(length=500)
-    protected String degree;
+    protected String title;
     @Column(columnDefinition="TEXT")
-    protected String activities;
-    @Column(columnDefinition="TEXT")
-    protected String notes;
+    protected String summary;
+    protected String isCurrent;
     @OneToOne(cascade= CascadeType.ALL, fetch= FetchType.EAGER)
     protected LinkedinDate startDate;
     @OneToOne(cascade= CascadeType.ALL, fetch= FetchType.EAGER)
     protected LinkedinDate endDate;
+    @ManyToOne(cascade= CascadeType.PERSIST)
+    protected LinkedinCompany company;
     
     public Long getId() {
         return id;
@@ -48,50 +43,30 @@ public class LinkedinEducation
         this.linkedinId = linkedinId;
     }
     
-    public String getSchoolName() {
-        return schoolName;
+    public String getTitle() {
+        return title;
     }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
-    
-    public String getFieldOfStudy() {
-        return fieldOfStudy;
-    }
-
-    public void setFieldOfStudy(String fieldOfStudy) {
-        this.fieldOfStudy = fieldOfStudy;
+    public void setTitle(String title) {
+        this.title = title;
     }
     
-    public String getDegree() {
-        return degree;
+    public String getSummary() {
+        return summary;
     }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-    
-    public String getActivities() {
-        return activities;
-    }
-
-    public void setActivities(String activities) {
-        this.activities = activities;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
     
-    public String getNotes() {
-        return notes;
+    public String getIsCurrent() {
+        return isCurrent;
     }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setIsCurrent(String isCurrent) {
+        this.isCurrent = isCurrent;
     }
     
     public LinkedinDate getStartDate() {
         return startDate;
     }
-
     public void setStartDate(LinkedinDate startDate) {
         this.startDate = startDate;
     }
@@ -99,8 +74,14 @@ public class LinkedinEducation
     public LinkedinDate getEndDate() {
         return endDate;
     }
-
     public void setEndDate(LinkedinDate endDate) {
         this.endDate = endDate;
+    }
+    
+    public LinkedinCompany getCompany() {
+        return company;
+    }
+    public void setCompany(LinkedinCompany company) {
+        this.company = company;
     }
 }

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -21,10 +20,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import socialseco.model.linkedin.LinkedinDate;
-import socialseco.model.linkedin.LinkedinEducation;
-import socialseco.model.linkedin.LinkedinLanguage;
-import socialseco.model.linkedin.LinkedinUser;
+import socialseco.model.linkedin.*;
 
 /**
  *
@@ -32,7 +28,7 @@ import socialseco.model.linkedin.LinkedinUser;
  */
 public class UserExtractor {
     private static final String PROTECTED_RESOURCE_URL =
-            "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,languages,educations)";
+            "http://api.linkedin.com/v1/people/~/connections:(id,first-name,last-name,headline,location,industry,summary,associations,honors,languages,educations,positions,publications,patents,certifications,skills)";
     
     private LinkedInAuthenticator authenticator;
     
@@ -54,7 +50,6 @@ public class UserExtractor {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         
         InputStream is = new ByteArrayInputStream(oauthResponse.getBody().getBytes("UTF-8"));
-        System.out.println(is.toString());
         Document doc = dBuilder.parse(is);
         doc.getDocumentElement().normalize();
         NodeList personList = doc.getElementsByTagName("person");
@@ -68,7 +63,31 @@ public class UserExtractor {
                 String id = getTagValue("id", personElement);
                 String first_name = getTagValue("first-name", personElement);
                 String last_name = getTagValue("last-name", personElement);
+                String headline = getTagValue("headline", personElement);
                 String industry = getTagValue("industry", personElement);
+                String summary = getTagValue("summary", personElement);
+                String associations = getTagValue("associations", personElement);
+                String honors = getTagValue("honors", personElement);
+                String location = null;
+                String locationContryCode = null;
+                
+                NodeList locationList = personElement.getElementsByTagName("location");
+                if(locationList.getLength() > 0){
+                    Node locationNode = locationList.item(0);
+                    if (locationNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element locationElement = (Element) locationNode;
+                        location = getTagValue("name", locationElement);
+                        
+                        NodeList countryList = locationElement.getElementsByTagName("country");
+                        if(countryList.getLength() > 0){
+                            Node countryNode = countryList.item(0);
+                            if (countryNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element countryElement = (Element) countryNode;
+                                locationContryCode = getTagValue("code", countryElement);
+                            }
+                        }
+                    }
+                }
                 
                 // Languages
                 List<LinkedinLanguage> languages = new ArrayList<LinkedinLanguage>();
@@ -129,13 +148,39 @@ public class UserExtractor {
                                 Element startDateElement = (Element) startDateNode;
                                 String year = getTagValue("year", startDateElement);
                                 String month = getTagValue("month", startDateElement);
+                                String day = getTagValue("day", startDateElement);
                                 
                                 if(year != null && !year.isEmpty()){
                                     LinkedinDate startDate = new LinkedinDate();
                                     startDate.setYear(year);
-                                    if(month != null && !month.isEmpty())
+                                    if(month != null && !month.isEmpty()){
                                         startDate.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            startDate.setDay(day);
+                                    }
                                     education.setStartDate(startDate);
+                                }
+                            }
+                        }
+                        
+                        NodeList endDateList = educationElement.getElementsByTagName("end-date");
+                        if(endDateList.getLength() > 0){
+                            Node endDateNode = endDateList.item(0);
+                            if (endDateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element endDateElement = (Element) endDateNode;
+                                String year = getTagValue("year", endDateElement);
+                                String month = getTagValue("month", endDateElement);
+                                String day = getTagValue("day", endDateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate endDate = new LinkedinDate();
+                                    endDate.setYear(year);
+                                    if(month != null && !month.isEmpty()){
+                                        endDate.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            endDate.setDay(day);
+                                    }
+                                    education.setEndDate(endDate);
                                 }
                             }
                         }
@@ -144,13 +189,306 @@ public class UserExtractor {
                     }
                 }
                 
+                // Position
+                List<LinkedinPosition> positions = new ArrayList<LinkedinPosition>();
+                NodeList positionList = personElement.getElementsByTagName("position");
+                for (int idx=0; idx < positionList.getLength(); idx++) {
+                    Node positionNode = positionList.item(idx);
+                    if (positionNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element positionElement = (Element) positionNode;
+                        
+                        String positionId = getTagValue("id", positionElement);
+                        
+                        String title = getTagValue("title", positionElement);
+                        String position_summary = getTagValue("summary", positionElement);
+                        String isCurrent = getTagValue("is-current", positionElement);
+                        
+                        LinkedinPosition position = new LinkedinPosition();
+                        position.setLinkedinId(positionId);
+                        position.setTitle(title);
+                        position.setSummary(position_summary);
+                        position.setIsCurrent(isCurrent);
+                        
+                        NodeList startDateList = positionElement.getElementsByTagName("start-date");
+                        if(startDateList.getLength() > 0){
+                            Node startDateNode = startDateList.item(0);
+                            if (startDateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element startDateElement = (Element) startDateNode;
+                                String year = getTagValue("year", startDateElement);
+                                String month = getTagValue("month", startDateElement);
+                                String day = getTagValue("day", startDateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate startDate = new LinkedinDate();
+                                    startDate.setYear(year);
+                                    if(month != null && !month.isEmpty()){
+                                        startDate.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            startDate.setDay(day);
+                                    }
+                                    position.setStartDate(startDate);
+                                }
+                            }
+                        }
+                        
+                        NodeList endDateList = positionElement.getElementsByTagName("end-date");
+                        if(endDateList.getLength() > 0){
+                            Node endDateNode = endDateList.item(0);
+                            if (endDateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element endDateElement = (Element) endDateNode;
+                                String year = getTagValue("year", endDateElement);
+                                String month = getTagValue("month", endDateElement);
+                                String day = getTagValue("day", endDateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate endDate = new LinkedinDate();
+                                    endDate.setYear(year);
+                                    if(month != null && !month.isEmpty()){
+                                        endDate.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            endDate.setDay(day);
+                                    }
+                                    position.setEndDate(endDate);
+                                }
+                            }
+                        }
+                        
+                        NodeList companyList = positionElement.getElementsByTagName("company");
+                        if(companyList.getLength() > 0){
+                            Node companyNode = companyList.item(0);
+                            if (companyNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element companyElement = (Element) companyNode;
+                                String company_id = getTagValue("id", companyElement);
+                                String company_name = getTagValue("name", companyElement);
+                                String company_type = getTagValue("type", companyElement);
+                                String company_size = getTagValue("size", companyElement);
+                                String company_industry = getTagValue("industry", companyElement);
+                                String company_ticker = getTagValue("ticker", companyElement);
+                                
+                                LinkedinCompany company = new LinkedinCompany();
+                                company.setLinkedinId(company_id);
+                                company.setName(company_name);
+                                company.setType(company_type);
+                                company.setSize(company_size);
+                                company.setIndustry(company_industry);
+                                company.setTicker(company_ticker);
+                                
+                                position.setCompany(company);
+                            }
+                        }
+                        
+                        positions.add(position);
+                    }
+                }
+                
+                // Publications
+                List<LinkedinPublication> publications = new ArrayList<LinkedinPublication>();
+                NodeList publicationList = personElement.getElementsByTagName("publication");
+                for (int idx=0; idx < publicationList.getLength(); idx++) {
+                    Node publicationNode = publicationList.item(idx);
+                    if (publicationNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element publicationElement = (Element) publicationNode;
+                        
+                        String publicationId = getTagValue("id", publicationElement);
+                        
+                        String publicationTitle = getTagValue("title", publicationElement);
+                        String publicationPublisher = getTagValue("publisher", publicationElement);
+                        String publicationUrl = getTagValue("url", publicationElement);
+                        String publicationSummary = getTagValue("summary", publicationElement);
+                        
+                        LinkedinPublication publication = new LinkedinPublication();
+                        publication.setLinkedinId(publicationId);
+                        publication.setTitle(publicationTitle);
+                        publication.setPublisher(publicationPublisher);
+                        publication.setUrl(publicationUrl);
+                        publication.setSummary(publicationSummary);
+                        
+                        NodeList dateList = publicationElement.getElementsByTagName("date");
+                        if(dateList.getLength() > 0){
+                            Node dateNode = dateList.item(0);
+                            if (dateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element dateElement = (Element) dateNode;
+                                String year = getTagValue("year", dateElement);
+                                String month = getTagValue("month", dateElement);
+                                String day = getTagValue("day", dateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate date = new LinkedinDate();
+                                    date.setYear(year);
+                                    if(month != null && !month.isEmpty()){
+                                        date.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            date.setDay(day);
+                                    }
+                                    publication.setDate(date);
+                                }
+                            }
+                        }
+                        
+                        publications.add(publication);
+                    }
+                }
+                
+                // Patents
+                List<LinkedinPatent> patents = new ArrayList<LinkedinPatent>();
+                NodeList patentList = personElement.getElementsByTagName("patent");
+                for (int idx=0; idx < patentList.getLength(); idx++) {
+                    Node patentNode = patentList.item(idx);
+                    if (patentNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element patentElement = (Element) patentNode;
+                        
+                        String patentId = getTagValue("id", patentElement);
+                        
+                        String patentTitle = getTagValue("title", patentElement);
+                        String patentSummary = getTagValue("summary", patentElement);
+                        String patentNumber = getTagValue("number", patentElement);
+                        String patentUrl = getTagValue("url", patentElement);
+                        
+                        LinkedinPatent patent = new LinkedinPatent();
+                        patent.setLinkedinId(patentId);
+                        patent.setTitle(patentTitle);
+                        patent.setSummary(patentSummary);
+                        patent.setNumber(patentNumber);
+                        patent.setUrl(patentUrl);
+                        
+                        NodeList dateList = patentElement.getElementsByTagName("date");
+                        if(dateList.getLength() > 0){
+                            Node dateNode = dateList.item(0);
+                            if (dateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element dateElement = (Element) dateNode;
+                                String year = getTagValue("year", dateElement);
+                                String month = getTagValue("month", dateElement);
+                                String day = getTagValue("day", dateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate date = new LinkedinDate();
+                                    date.setYear(year);
+                                    if(month != null && !month.isEmpty()){
+                                        date.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            date.setDay(day);
+                                    }
+                                    patent.setDate(date);
+                                }
+                            }
+                        }
+                        
+                        patents.add(patent);
+                    }
+                }
+                
+                // Certifications
+                List<LinkedinCertification> certifications = new ArrayList<LinkedinCertification>();
+                NodeList certificationList = personElement.getElementsByTagName("certification");
+                for (int idx=0; idx < certificationList.getLength(); idx++) {
+                    Node certificationNode = certificationList.item(idx);
+                    if (certificationNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element certificationElement = (Element) certificationNode;
+                        
+                        String certificationId = getTagValue("id", certificationElement);
+                        
+                        String certificationName = getTagValue("name", certificationElement);
+                        String certificationNumber = getTagValue("number", certificationElement);
+                        
+                        LinkedinCertification certification = new LinkedinCertification();
+                        certification.setLinkedinId(certificationId);
+                        certification.setName(certificationName);
+                        certification.setNumber(certificationNumber);
+                        
+                        NodeList startDateList = certificationElement.getElementsByTagName("start-date");
+                        if(startDateList.getLength() > 0){
+                            Node startDateNode = startDateList.item(0);
+                            if (startDateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element startDateElement = (Element) startDateNode;
+                                String year = getTagValue("year", startDateElement);
+                                String month = getTagValue("month", startDateElement);
+                                String day = getTagValue("day", startDateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate startDate = new LinkedinDate();
+                                    startDate.setYear(year);
+                                    if(month != null && !month.isEmpty()){
+                                        startDate.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            startDate.setDay(day);
+                                    }
+                                    certification.setStartDate(startDate);
+                                }
+                            }
+                        }
+                        
+                        NodeList endDateList = certificationElement.getElementsByTagName("end-date");
+                        if(endDateList.getLength() > 0){
+                            Node endDateNode = endDateList.item(0);
+                            if (endDateNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element endDateElement = (Element) endDateNode;
+                                String year = getTagValue("year", endDateElement);
+                                String month = getTagValue("month", endDateElement);
+                                String day = getTagValue("day", endDateElement);
+                                
+                                if(year != null && !year.isEmpty()){
+                                    LinkedinDate endDate = new LinkedinDate();
+                                    endDate.setYear(year);
+                                    if(month != null && !month.isEmpty()){
+                                        endDate.setMonth(month);
+                                        if(day != null && !day.isEmpty())
+                                            endDate.setDay(day);
+                                    }
+                                    certification.setEndDate(endDate);
+                                }
+                            }
+                        }
+                        
+                        certifications.add(certification);
+                    }
+                }
+                
+                // Skills
+                List<LinkedinSkill> skills = new ArrayList<LinkedinSkill>();
+                NodeList skillList = personElement.getElementsByTagName("skill");
+                for (int idx=0; idx < skillList.getLength(); idx++) {
+                    Node skillNode = skillList.item(idx);
+                    if (skillNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element skillElement = (Element) skillNode;
+                        
+                        String skillId = getTagValue("id", skillElement);
+                        
+                        LinkedinSkill skill = new LinkedinSkill();
+                        skill.setLinkedinId(skillId);
+                        
+                        NodeList subskillList = skillElement.getElementsByTagName("skill");
+                        if(subskillList.getLength() > 0){
+                            Node subskillNode = subskillList.item(0);
+                            if (subskillNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element subskillElement = (Element) subskillNode;
+                                String skillName = getTagValue("name", subskillElement);
+                                if (skillName == null || skillName.isEmpty()) continue;
+                                skill.setName(skillName);
+                            }
+                        }
+                        
+                        skills.add(skill);
+                    }
+                }
+                
                 user = new LinkedinUser();
                 user.setLinkedinId(id);
                 user.setName(first_name);
                 user.setSurname(last_name);
+                user.setHeadline(headline);
+                user.setLocation(location);
+                user.setLocationCountryCode(locationContryCode);
                 user.setIndustry(industry);
+                user.setSummary(summary);
+                user.setAssociations(associations);
+                user.setHonors(honors);
                 user.setLanguages(languages);
                 user.setEducations(educations);
+                user.setPositions(positions);
+                user.setPublications(publications);
+                user.setPatents(patents);
+                user.setCertifications(certifications);
+                user.setSkills(skills);
                 
                 ret.add(user);
             }
