@@ -52,6 +52,7 @@ if(obj!=null)
         <h2> Method selection </h2>
             <select name="method">
                 <option value="letterPairSimilarity" >Letter pair similarity</option>
+                <option value="MaxWordSimilarity" >MaxWordSimilarity</option>
             </select>
         
         <h2> Number of recommendations </h2>

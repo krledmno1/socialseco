@@ -43,15 +43,170 @@ public class Comparator {
         {
             if(method.equals("letterPairSimilarity"))
                 ret=compareBagOfWords(q, (List<FacebookUser>)o, getNum());
+            
+            if(method.equals("MaxWordSimilarity"))
+                ret=compareMinDistanceWords(q, (List<FacebookUser>)o, getNum());
+           
         }
         if(platform.equals("linkedin"))
         {
             if(method.equals("letterPairSimilarity"))
                 ret=compareBagOfWords(q, (ArrayList<LinkedinUser>)o, getNum());
+            if(method.equals("MaxWordSimilarity"))
+                ret=compareMinDistanceWords(q, (ArrayList<LinkedinUser>)o, getNum());
         }
         
         return ret;
     }
+    
+    private Question compareMinDistanceWords(Question q, List<FacebookUser> users, int num)
+    {
+        String questionBag = flatten(q);
+        Map<Long,Double> userEvals = new HashMap<Long, Double>();
+        
+        for(FacebookUser user:users)
+        {
+            String userBag = flatten(user);
+            if(!userBag.isEmpty())
+            {
+                String [] words1  = questionBag.split("\\s");
+                String [] words2  = userBag.split("\\s");
+
+                List<Double> eval = new ArrayList<Double>();
+                for(int i = 0;i<words1.length;i++)
+                {
+                    Double max=0.0;
+                    int count = 1;
+                       for(int j = 0;j<words2.length;j++)
+                       {
+                           Double result=  LetterPairSimilarity.compareStrings(words1[i], words2[j]);
+                           if(max<result)
+                           {
+                                max = result;
+                                count =1;
+                           }
+                           else
+                           {
+                               if(max.equals(result))
+                               {
+                                  count++; 
+                               }
+                           }
+                       }
+                    eval.add(count*max);
+                }
+
+                Double sum=0.0;
+                for(Double d:eval)
+                {
+                    sum+=d;
+                }
+
+                sum = sum/eval.size();
+                userEvals.put(user.getId(), sum);
+            }
+        }
+        int k=0;
+        if(num>userEvals.size())
+        {
+            k=userEvals.size();
+        }
+        else
+        {
+            k=num;
+        }
+        
+        String [] selected = new String[k];
+        String [] confidence = new String[k];
+        for(int i =0;i<k;i++)
+        {
+            Double max = takeMax(userEvals);
+            Long maxid = takeMaxId(userEvals);
+            userEvals.remove(maxid);
+            selected[i]=String.valueOf(maxid);
+            confidence[i]=String.valueOf(max);
+        }
+        q.setSelectedUsers(selected);
+        q.setConfidence(confidence);
+        
+        return q;
+    }
+    
+    
+     private Question compareMinDistanceWords(Question q, ArrayList<LinkedinUser> users, int num)
+    {
+        String questionBag = flatten(q);
+        Map<Long,Double> userEvals = new HashMap<Long, Double>();
+        
+        for(LinkedinUser user:users)
+        {
+            String userBag = flatten(user);
+            if(!userBag.isEmpty())
+            {
+                String [] words1  = questionBag.split("\\s");
+                String [] words2  = userBag.split("\\s");
+
+                List<Double> eval = new ArrayList<Double>();
+                for(int i = 0;i<words1.length;i++)
+                {
+                    Double max=0.0;
+                    int count = 1;
+                       for(int j = 0;j<words2.length;j++)
+                       {
+                           Double result=  LetterPairSimilarity.compareStrings(words1[i], words2[j]);
+                           if(max<result)
+                           {
+                                max = result;
+                                count =1;
+                           }
+                           else
+                           {
+                               if(max.equals(result))
+                               {
+                                  count++; 
+                               }
+                           }
+                       }
+                    eval.add(count*max);
+                }
+
+                Double sum=0.0;
+                for(Double d:eval)
+                {
+                    sum+=d;
+                }
+
+                sum = sum/eval.size();
+                userEvals.put(user.getId(), sum);
+            }
+        }
+        int k=0;
+        if(num>userEvals.size())
+        {
+            k=userEvals.size();
+        }
+        else
+        {
+            k=num;
+        }
+        
+        String [] selected = new String[k];
+        String [] confidence = new String[k];
+        for(int i =0;i<k;i++)
+        {
+            Double max = takeMax(userEvals);
+            Long maxid = takeMaxId(userEvals);
+            userEvals.remove(maxid);
+            selected[i]=String.valueOf(maxid);
+            confidence[i]=String.valueOf(max);
+        }
+        q.setSelectedUsers(selected);
+        q.setConfidence(confidence);
+        
+        return q;
+    }
+    
+    
     
     private Question compareBagOfWords(Question q, List<FacebookUser> users, int num)
     {
@@ -290,7 +445,7 @@ public class Comparator {
         return output;
     }
     
-    private String preprocess(String output) {
+    public String preprocess(String output) {
         output = output.toLowerCase();
         
         Pattern pattern = Pattern.compile("\\s+");
