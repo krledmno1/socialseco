@@ -40,6 +40,14 @@ public class UserDAO
         return list;
     }
     
+    public List<LinkedinUser> readAllLinkedinUsersWithoutTransaction() {
+        List<LinkedinUser> list = getSession()
+                .createCriteria(LinkedinUser.class)
+                .list();
+        
+        return list;
+    }
+    
     public LinkedinUser readLinkedinUsersByLinkedinId(String linkedinId) {
         getSession().beginTransaction();
         

@@ -21,6 +21,13 @@
     <mapping class="socialseco.model.linkedin.LinkedinLanguage"/>
     <mapping class="socialseco.model.linkedin.LinkedinEducation"/>
     <mapping class="socialseco.model.linkedin.LinkedinDate"/>
+    <mapping class="socialseco.model.linkedin.LinkedinPosition"/>
+    <mapping class="socialseco.model.linkedin.LinkedinCompany"/>
+    <mapping class="socialseco.model.linkedin.LinkedinPublication"/>
+    <mapping class="socialseco.model.linkedin.LinkedinPatent"/>
+    <mapping class="socialseco.model.linkedin.LinkedinCertification"/>
+    <mapping class="socialseco.model.linkedin.LinkedinRecommendation"/>
+    <mapping class="socialseco.model.linkedin.LinkedinSkill"/>
     <mapping class="socialseco.model.facebook.FacebookUser"/>
     <mapping class="socialseco.model.facebook.FacebookActivity"/>
     <mapping class="socialseco.model.facebook.FacebookBook"/>

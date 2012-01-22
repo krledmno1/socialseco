@@ -6,13 +6,12 @@ package socialseco.model.linkedin;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
 /**
  *
  * @author damian
  */
 @Entity
-public class LinkedinEducation
+public class LinkedinCertification
     implements Serializable {
     
     @Id @GeneratedValue
@@ -20,15 +19,9 @@ public class LinkedinEducation
     
     protected String linkedinId;
     @Column(length=500)
-    protected String schoolName;
+    protected String name;
     @Column(length=500)
-    protected String fieldOfStudy;
-    @Column(length=500)
-    protected String degree;
-    @Column(columnDefinition="TEXT")
-    protected String activities;
-    @Column(columnDefinition="TEXT")
-    protected String notes;
+    protected String number;
     @OneToOne(cascade= CascadeType.ALL, fetch= FetchType.EAGER)
     protected LinkedinDate startDate;
     @OneToOne(cascade= CascadeType.ALL, fetch= FetchType.EAGER)
@@ -48,50 +41,23 @@ public class LinkedinEducation
         this.linkedinId = linkedinId;
     }
     
-    public String getSchoolName() {
-        return schoolName;
+    public String getName() {
+        return name;
     }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
-    }
-    
-    public String getFieldOfStudy() {
-        return fieldOfStudy;
-    }
-
-    public void setFieldOfStudy(String fieldOfStudy) {
-        this.fieldOfStudy = fieldOfStudy;
+    public void setName(String name) {
+        this.name = name;
     }
     
-    public String getDegree() {
-        return degree;
+    public String getNumber() {
+        return number;
     }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-    
-    public String getActivities() {
-        return activities;
-    }
-
-    public void setActivities(String activities) {
-        this.activities = activities;
-    }
-    
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setNumber(String number) {
+        this.number = number;
     }
     
     public LinkedinDate getStartDate() {
         return startDate;
     }
-
     public void setStartDate(LinkedinDate startDate) {
         this.startDate = startDate;
     }
@@ -99,8 +65,8 @@ public class LinkedinEducation
     public LinkedinDate getEndDate() {
         return endDate;
     }
-
     public void setEndDate(LinkedinDate endDate) {
         this.endDate = endDate;
     }
+    
 }

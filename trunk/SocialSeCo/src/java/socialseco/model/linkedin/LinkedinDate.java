@@ -18,6 +18,7 @@ public class LinkedinDate
     @Id @GeneratedValue
     protected Long id;
     
+    protected Integer day;
     protected Integer year;
     protected Integer month;
     
@@ -47,14 +48,27 @@ public class LinkedinDate
     public void setMonth(String month) {
         this.month = Integer.parseInt(month);;
     }
+    
+    public Integer getDay() {
+        return day;
+    }
+    public void setDay(Integer day) {
+        this.day = day;
+    }
+    public void setDay(String day) {
+        this.day = Integer.parseInt(day);
+    }
 
     @Override
     public String toString() {
         String ret = "";
         if(year != null){
             ret += year;
-            if(month != null)
+            if(month != null){
                 ret = month + "/" + ret;
+                if(day != null)
+                    ret = day + "/" + ret;
+            }
         }
         return ret;
     }
