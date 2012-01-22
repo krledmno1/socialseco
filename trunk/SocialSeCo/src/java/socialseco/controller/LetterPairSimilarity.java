@@ -14,12 +14,7 @@ public class LetterPairSimilarity {
     /** @return an array of adjacent letter pairs contained in the input string */
 	   private static String[] letterPairs(String str) {
                
-               if(str.length()<1)
-               {
-                   System.out.println(str);
-                   int a = 0;
-                   a++;
-               }
+            
               
 	       int numPairs = str.length()-1;
 	       String[] pairs = new String[numPairs];
@@ -32,10 +27,7 @@ public class LetterPairSimilarity {
 	   /** @return an ArrayList of 2-character Strings. */
 	   private static ArrayList wordLetterPairs(String str) {
 	       ArrayList allPairs = new ArrayList();
-               if(str.contains("  "))
-               {
-                   System.out.println(str);
-               }
+              
 	       // Tokenize the string and put the tokens/words into an array
 	       String[] words = str.split("\\s");
 	       // For each word
