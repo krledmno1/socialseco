@@ -21,6 +21,9 @@ import socialseco.model.User;
 public class FacebookUser
         extends User {
 
+    
+    public static int fieldNum = 17;
+    
     protected String facebookId;
     private String fullName;
     private String hometown;
@@ -190,6 +193,238 @@ public class FacebookUser
     }
     public void setFacebookId(String facebookId) {
         this.facebookId = facebookId;
+    }
+    
+    
+    public String flattenFeature(int i)
+    {
+        switch(i)
+        {
+            case 0:
+            {
+              return flattenActivities(""); 
+            }
+            case 1:
+            {
+              return flattenBio("");
+            }
+            case 2:
+            {
+              return flattenBooks("");
+            }
+            case 3:
+            {
+              return flattenEducation("");
+            }
+            case 4:
+            {
+              return flattenGames("");
+            }
+            case 5:
+            {
+              return flattenGroups("");
+            }
+            case 6:
+            {
+              return flattenHometown("");
+            }
+            case 7:
+            {
+              return flattenInterests("");
+            }
+            case 8:
+            {
+              return flattenLanguages("");
+            }
+            case 9:
+            {
+              return flattenLikes("");
+            }
+            case 10:
+            {
+              return flattenLocation("");
+            }
+            case 11:
+            {
+              return flattenMovies("");
+            }
+            case 12:
+            {
+              return flattenMusic("");
+            }
+            case 13:
+            {
+              return flattenReligion("");
+            }
+            case 14:
+            {
+              return flattenSports("");
+            }
+            case 15:
+            {
+              flattenTelevision("");
+            }
+            case 16:
+            {
+              flattenWork("");
+            }
+        }
+        return null;
+    }
+    
+    
+    public String flattenHometown(String output)
+    {
+        output += getHometown()!=null ? getHometown():"";
+        output += " ";
+        return output;
+    }
+    public String flattenLocation(String output)
+    {
+        output += getLocation()!=null ? getLocation():"";
+        output += " ";
+        return output;
+    }
+    public String flattenWork(String output)
+    {
+        for(FacebookWork obj: getWorks())
+        {
+            output += obj.getEmployer();
+            output += " ";
+            output += obj.getPosition();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenBio(String output)
+    {
+        output += getBio()!=null ? getBio():"";
+        output += " ";
+        return output;
+       
+    }
+    public String flattenReligion(String output)
+    {
+        output += getReligion()!=null ? getReligion():"";
+        output += " ";
+        return output;
+    }
+     
+    public String flattenEducation(String output)
+    {
+        for(FacebookEducation obj: getEducation())
+        {
+            output += obj.getSchool();
+            output += " ";
+            output += obj.getType();
+            output += " ";
+            
+            for(FacebookConcentration con: obj.getConecentration())
+            {    
+                output += con.getName();
+                output += " ";
+            }   
+        }
+        return output;
+    }
+    public String flattenSports(String output)
+    {
+        for(FacebookSport obj: getSports())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    } 
+    public String flattenActivities(String output)
+    {
+        for(FacebookActivity obj: getActivities())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenGroups(String output)
+    {
+        for(FacebookGroup obj: getGroups())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenInterests(String output)
+    {
+        for(FacebookInterest obj: getInterests())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenLikes(String output)
+    {
+        for(FacebookLike obj: getLikes())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenMovies(String output)
+    {
+        for(FacebookMovie obj: getMovies())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenMusic(String output)
+    {
+        for(FacebookMusic obj: getMusic())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenTelevision(String output)
+    {
+        for(FacebookTelevision obj: getTelevision())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenGames(String output)
+    {
+        for(FacebookGame obj: getGames())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenBooks(String output)
+    {
+        for(FacebookBook obj: getBooks())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
+    }
+    public String flattenLanguages(String output)
+    {
+        for(FacebookLanguage obj: getLanguages())
+        {
+            output += obj.getName();
+            output += " ";
+        }
+        return output;
     }
     
     

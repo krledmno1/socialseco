@@ -4,7 +4,8 @@
  */
 package socialseco.dao;
 
-import socialseco.util.Matrix;
+import org.hibernate.criterion.Restrictions;
+import socialseco.model.util.Matrix;
 
 /**
  *
@@ -13,4 +14,15 @@ import socialseco.util.Matrix;
 public class MatrixDAO
     extends GenericDAO<Matrix, Long> {
     
+    
+    public Matrix readMatrixByIdWithoutTransaction(Long id) {
+        
+        Matrix m = (Matrix) getSession()
+                .createCriteria(Matrix.class)
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
+        
+         
+        return m;
+    }
 }

@@ -27,6 +27,14 @@ import socialseco.model.question.Schema;
  */
 public class Comparator {
     
+    public static String facebookPlatform = "facebook";
+    public static String linkedinPlatform = "linkedin";
+    
+    public static String letterPairSimilarity = "letterPairSimilarity";
+    public static String maxWordSimilarity = "MaxWordSimilarity";
+    public static String instanceBasedMatching = "instanceBasedMatching";
+    
+    
     private String platform; 
     private String method;
     private int num;
@@ -35,30 +43,47 @@ public class Comparator {
         
     }
     
+    
+    /////////////////////////////////////////////////////
+    //          GENERAL COMAPRISSON
+    /////////////////////////////////////////////////////
+    
     public Question compare(Question q, Object o)
     {
         Question ret = null;
         
-        if(platform.equals("facebook"))
+        if(platform.equals(facebookPlatform))
         {
-            if(method.equals("letterPairSimilarity"))
+            if(method.equals(letterPairSimilarity))
                 ret=compareBagOfWords(q, (List<FacebookUser>)o, getNum());
             
-            if(method.equals("MaxWordSimilarity"))
+            if(method.equals(maxWordSimilarity))
                 ret=compareMinDistanceWords(q, (List<FacebookUser>)o, getNum());
+            
+            if(method.equals(instanceBasedMatching))
+                ret=entityBasedComparisson(q, (List<FacebookUser>)o, getNum());
            
         }
-        if(platform.equals("linkedin"))
+        if(platform.equals(linkedinPlatform))
         {
-            if(method.equals("letterPairSimilarity"))
+            if(method.equals(letterPairSimilarity))
                 ret=compareBagOfWords(q, (ArrayList<LinkedinUser>)o, getNum());
-            if(method.equals("MaxWordSimilarity"))
+            
+            if(method.equals(maxWordSimilarity))
                 ret=compareMinDistanceWords(q, (ArrayList<LinkedinUser>)o, getNum());
+            
+            if(method.equals(instanceBasedMatching))
+                ret=entityBasedComparisson(q, (ArrayList<LinkedinUser>)o, getNum());
         }
         
         return ret;
     }
     
+    
+    
+    ////////////////////////////////////////////////////
+    //      Minimal Word Distance
+    ////////////////////////////////////////////////////
     private Question compareMinDistanceWords(Question q, List<FacebookUser> users, int num)
     {
         String questionBag = flatten(q);
@@ -67,70 +92,18 @@ public class Comparator {
         for(FacebookUser user:users)
         {
             String userBag = flatten(user);
-            if(!userBag.isEmpty())
+           if(!userBag.isEmpty())
             {
-                String [] words1  = questionBag.split("\\s");
-                String [] words2  = userBag.split("\\s");
-
-                List<Double> eval = new ArrayList<Double>();
-                for(int i = 0;i<words1.length;i++)
-                {
-                    Double max=0.0;
-                    int count = 1;
-                       for(int j = 0;j<words2.length;j++)
-                       {
-                           Double result=  LetterPairSimilarity.compareStrings(words1[i], words2[j]);
-                           if(max<result)
-                           {
-                                max = result;
-                                count =1;
-                           }
-                           else
-                           {
-                               if(max.equals(result))
-                               {
-                                  count++; 
-                               }
-                           }
-                       }
-                    eval.add(count*max);
-                }
-
-                Double sum=0.0;
-                for(Double d:eval)
-                {
-                    sum+=d;
-                }
-
-                sum = sum/eval.size();
-                userEvals.put(user.getId(), sum);
+                
+             double sum = MaxWordSimilarity.compareMinDistanceWords(questionBag, userBag);
+             userEvals.put(user.getId(), sum);
             }
         }
-        int k=0;
-        if(num>userEvals.size())
-        {
-            k=userEvals.size();
-        }
-        else
-        {
-            k=num;
-        }
-        
-        String [] selected = new String[k];
-        String [] confidence = new String[k];
-        for(int i =0;i<k;i++)
-        {
-            Double max = takeMax(userEvals);
-            Long maxid = takeMaxId(userEvals);
-            userEvals.remove(maxid);
-            selected[i]=String.valueOf(maxid);
-            confidence[i]=String.valueOf(max);
-        }
-        q.setSelectedUsers(selected);
-        q.setConfidence(confidence);
+       q = setRecommendedUsers(q,userEvals,num);
         
         return q;
     }
+    
     
     
      private Question compareMinDistanceWords(Question q, ArrayList<LinkedinUser> users, int num)
@@ -143,70 +116,21 @@ public class Comparator {
             String userBag = flatten(user);
             if(!userBag.isEmpty())
             {
-                String [] words1  = questionBag.split("\\s");
-                String [] words2  = userBag.split("\\s");
-
-                List<Double> eval = new ArrayList<Double>();
-                for(int i = 0;i<words1.length;i++)
-                {
-                    Double max=0.0;
-                    int count = 1;
-                       for(int j = 0;j<words2.length;j++)
-                       {
-                           Double result=  LetterPairSimilarity.compareStrings(words1[i], words2[j]);
-                           if(max<result)
-                           {
-                                max = result;
-                                count =1;
-                           }
-                           else
-                           {
-                               if(max.equals(result))
-                               {
-                                  count++; 
-                               }
-                           }
-                       }
-                    eval.add(count*max);
-                }
-
-                Double sum=0.0;
-                for(Double d:eval)
-                {
-                    sum+=d;
-                }
-
-                sum = sum/eval.size();
+                double sum = MaxWordSimilarity.compareMinDistanceWords(questionBag, userBag);
                 userEvals.put(user.getId(), sum);
             }
         }
-        int k=0;
-        if(num>userEvals.size())
-        {
-            k=userEvals.size();
-        }
-        else
-        {
-            k=num;
-        }
-        
-        String [] selected = new String[k];
-        String [] confidence = new String[k];
-        for(int i =0;i<k;i++)
-        {
-            Double max = takeMax(userEvals);
-            Long maxid = takeMaxId(userEvals);
-            userEvals.remove(maxid);
-            selected[i]=String.valueOf(maxid);
-            confidence[i]=String.valueOf(max);
-        }
-        q.setSelectedUsers(selected);
-        q.setConfidence(confidence);
+        q = setRecommendedUsers(q,userEvals,num);
         
         return q;
     }
     
     
+     
+     
+     ////////////////////////////////////////////////////
+     //      Pair Letter similarity
+     ////////////////////////////////////////////////////
     
     private Question compareBagOfWords(Question q, List<FacebookUser> users, int num)
     {
@@ -222,28 +146,7 @@ public class Comparator {
                 userEvals.put(user.getId(), score);
             }
         }
-        int k=0;
-        if(num>userEvals.size())
-        {
-            k=userEvals.size();
-        }
-        else
-        {
-            k=num;
-        }
-        
-        String [] selected = new String[k];
-        String [] confidence = new String[k];
-        for(int i =0;i<k;i++)
-        {
-            Double max = takeMax(userEvals);
-            Long maxid = takeMaxId(userEvals);
-            userEvals.remove(maxid);
-            selected[i]=String.valueOf(maxid);
-            confidence[i]=String.valueOf(max);
-        }
-        q.setSelectedUsers(selected);
-        q.setConfidence(confidence);
+        q = setRecommendedUsers(q,userEvals,num);
         
         return q;
     }
@@ -259,33 +162,34 @@ public class Comparator {
             Double score = evaluateLetterPairSimilarity(questionBag,userBag);
             userEvals.put(user.getId(), score);
         }
-        int k=0;
-        if(num>userEvals.size())
-        {
-            k=userEvals.size();
-        }
-        else
-        {
-            k=num;
-        }
+        q = setRecommendedUsers(q,userEvals,num);
+        return q;
+    }
+    
+    ///////////////////////////////////////////////////////////////
+    //      Entity based schema comarisson
+    ////////////////////////////////////////////////////////////////
+    
+    private Question entityBasedComparisson(Question q, List<FacebookUser> users, int num)
+    {
+        EntityBasedComparisson ebc = new EntityBasedComparisson();
+        Map<Long,Double> userEvals = ebc.compare(q, users);
         
-        String [] selected = new String[k];
-        String [] confidence = new String[k];
-        for(int i =0;i<k;i++)
-        {
-            Double max = takeMax(userEvals);
-            Long maxid = takeMaxId(userEvals);
-            userEvals.remove(maxid);
-            selected[i]=String.valueOf(maxid);
-            confidence[i]=String.valueOf(max);
-        }
-        q.setSelectedUsers(selected);
-        q.setConfidence(confidence);
+        q = setRecommendedUsers(q,userEvals,num);
         
         return q;
     }
     
+    private Question entityBasedComparisson(Question q, ArrayList<LinkedinUser> users, int num)
+    {
+        return null;
+    }
     
+    
+    
+    //////////////////////////////////////////////
+    //            UTILITIES
+    //////////////////////////////////////////////
     
     private String flatten(Question q)
     {
@@ -325,108 +229,43 @@ public class Comparator {
         
         String output = "";
         
-        output += user.getBio()!=null ? user.getBio():"";
-        output += " ";
+        output += user.flattenBio(output);
         
-        output += user.getHometown()!=null ? user.getHometown():"";
-        output += " ";
+        output += user.flattenHometown(output);
         
         output += user.getGender()!=null ? user.getGender():"";
         output += " ";
         
-        output += user.getLocation()!=null ? user.getLocation():"";
-        output += " ";
+        output+= user.flattenLocation(output);
         
-        output += user.getReligion()!=null ? user.getReligion():"";
-        output += " ";
+        output += user.flattenReligion(output);
         
-        for(FacebookActivity obj: user.getActivities())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenActivities(output);
         
-        for(FacebookBook obj: user.getBooks())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenBooks(output);
         
-        for(FacebookGame obj: user.getGames())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenGames(output);
         
-        for(FacebookGroup obj: user.getGroups())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenGroups(output);
         
-        for(FacebookInterest obj: user.getInterests())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenInterests(output);
         
-        for(FacebookLike obj: user.getLikes())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenLikes(output);
         
-        for(FacebookMovie obj: user.getMovies())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenMovies(output);
         
-        for(FacebookMusic obj: user.getMusic())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenMusic(output);
+
+        output += user.flattenSports(output);
         
-        for(FacebookSport obj: user.getSports())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenTelevision(output);
         
-        for(FacebookTelevision obj: user.getTelevision())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenEducation(output);
         
-        for(FacebookEducation obj: user.getEducation())
-        {
-            output += obj.getSchool();
-            output += " ";
-            output += obj.getType();
-            output += " ";
-            
-            for(FacebookConcentration con: obj.getConecentration())
-            {    
-                output += con.getName();
-                output += " ";
-            }   
-        }
+        output += user.flattenWork(output);
         
-        for(FacebookWork obj: user.getWorks())
-        {
-            output += obj.getEmployer();
-            output += " ";
-            output += obj.getPosition();
-            output += " ";
-        }
-       
-        for(FacebookLanguage obj: user.getLanguages())
-        {
-            output += obj.getName();
-            output += " ";
-        }
+        output += user.flattenLanguages(output);
+        
         
         output = preprocess(output);
             
@@ -445,7 +284,7 @@ public class Comparator {
         return output;
     }
     
-    public String preprocess(String output) {
+    public static String preprocess(String output) {
         output = output.toLowerCase();
         
         Pattern pattern = Pattern.compile("\\s+");
@@ -453,7 +292,9 @@ public class Comparator {
         boolean check = matcher.find();
         output = matcher.replaceAll(" ");
       
-        output = stem(output);
+        output = output.trim();
+        
+      //  output = stem(output);
         
         output = output.trim();
         
@@ -462,7 +303,7 @@ public class Comparator {
         return output;
     }
     
-    private String stem(String output) {
+    private static String stem(String output) {
         
         
         String [] words = output.split(" ");
@@ -537,7 +378,39 @@ public class Comparator {
         
         return max;
     }
-
+        
+    private Question setRecommendedUsers(Question q, Map<Long, Double> userEvals, int num) 
+    {
+        int k=0;
+        if(num>userEvals.size())
+        {
+            k=userEvals.size();
+        }
+        else
+        {
+            k=num;
+        }
+        
+        String [] selected = new String[k];
+        String [] confidence = new String[k];
+        for(int i =0;i<k;i++)
+        {
+            Double max = takeMax(userEvals);
+            Long maxid = takeMaxId(userEvals);
+            userEvals.remove(maxid);
+            selected[i]=String.valueOf(maxid);
+            confidence[i]=String.valueOf(max);
+        }
+        q.setSelectedUsers(selected);
+        q.setConfidence(confidence);
+        
+        return q;
+    }
+        
+        
+    //////////////////////////////////////////////////////////
+    //    Getters & Setters
+    //////////////////////////////////////////////////////////
     /**
      * @return the platform
      */
@@ -579,6 +452,8 @@ public class Comparator {
     public void setNum(int num) {
         this.num = num;
     }
+
+   
     
 }
 

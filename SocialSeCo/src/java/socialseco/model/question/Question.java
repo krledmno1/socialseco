@@ -52,6 +52,22 @@ public class Question {
         return gson.fromJson(json, Question.class);
     }
     
+    public int getNumOfFields()
+    {
+        return questionSchema.getKeys().size();
+    }
+    
+    public String flattenFeature(int i)
+    {
+        String key = questionSchema.getKeys().get(i);
+        String output = "";
+        for(Instance ins: questionInstances)
+        {
+            output += ins.getValue(key);
+            output += " ";
+        }
+        return output;
+    }
     
 public void populateMappings(String json)
 {

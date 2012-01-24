@@ -71,6 +71,11 @@ public class UserExtractor {
                 String location = null;
                 String locationContryCode = null;
                 
+                if(summary!=null && summary.length()>99)
+                {
+                  summary= summary.substring(0, 99);
+                }
+                
                 NodeList locationList = personElement.getElementsByTagName("location");
                 if(locationList.getLength() > 0){
                     Node locationNode = locationList.item(0);
