@@ -51,7 +51,7 @@ public class FacebookUserExtractor {
         List<JsonUser> returnUsers = new ArrayList<JsonUser>();
         
         //TO DO CHANGE 50!!!
-        for(int i = 85; i<150;i++)
+        for(int i = 11; i<40;i++)
         {
             
             //user

@@ -43,6 +43,6 @@
     <mapping class="socialseco.model.facebook.FacebookTelevision"/>
     <mapping class="socialseco.model.facebook.FacebookWork"/>
     <mapping class="socialseco.model.facebook.FacebookLanguage"/>
-    <mapping class="socialseco.util.Matrix"/>
+    <mapping class="socialseco.model.util.Matrix"/>
   </session-factory>
 </hibernate-configuration>

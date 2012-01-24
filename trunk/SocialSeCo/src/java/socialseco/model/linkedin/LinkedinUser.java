@@ -17,6 +17,8 @@ import socialseco.model.User;
 public class LinkedinUser
         extends User {
 
+    public static int fieldNum = 14;
+    
     protected String linkedinId;
     @Column(length=500)
     protected String headline;
@@ -24,7 +26,7 @@ public class LinkedinUser
     protected String locationCountryCode;
     @Column(length=500)
     protected String industry;
-    @Column(columnDefinition="TEXT")
+    @Column(columnDefinition="TEXT",length=5000)
     protected String summary;
     @Column(columnDefinition="TEXT")
     protected String associations;

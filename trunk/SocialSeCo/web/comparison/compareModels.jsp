@@ -4,6 +4,7 @@
     Author     : krle
 --%>
 
+<%@page import="socialseco.controller.Comparator"%>
 <%@page import="socialseco.model.question.Instance"%>
 <%@page import="socialseco.model.question.KeyValue"%>
 <%@page import="socialseco.model.question.Question"%>
@@ -45,14 +46,15 @@ if(obj!=null)
         <h2> Platform selection </h2>
         <form action="comparisonResults.jsp" method="post">
             <select name="platform">
-                <option value="facebook" >Facebook</option>
-                <option value="linkedin" >LinkedIn</option>
+                <option value="<%=Comparator.facebookPlatform%>" >Facebook</option>
+                <option value="<%=Comparator.linkedinPlatform%>" >LinkedIn</option>
             </select>
             
         <h2> Method selection </h2>
             <select name="method">
-                <option value="letterPairSimilarity" >Letter pair similarity</option>
-                <option value="MaxWordSimilarity" >MaxWordSimilarity</option>
+                <option value="<%=Comparator.letterPairSimilarity%>" >Letter pair similarity</option>
+                <option value="<%=Comparator.maxWordSimilarity%>" >Max Word Similarity</option>
+                <option value="<%=Comparator.instanceBasedMatching%>" >Instance based matching</option>
             </select>
         
         <h2> Number of recommendations </h2>
