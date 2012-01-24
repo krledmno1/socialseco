@@ -269,7 +269,7 @@ public class FacebookUser
               flattenWork("");
             }
         }
-        return null;
+        return "";
     }
     
     

@@ -91,6 +91,7 @@ public class Comparator {
         
         for(FacebookUser user:users)
         {
+            System.out.println("Max Word Similarity with user " + user.getName());
             String userBag = flatten(user);
            if(!userBag.isEmpty())
             {

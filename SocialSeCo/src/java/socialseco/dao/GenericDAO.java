@@ -34,8 +34,10 @@ public class GenericDAO<T, ID extends Serializable> {
 
     
     public void endConversation() {
-        getSession().getTransaction().commit();
-        getSession().close();
+        if(getSession().getTransaction().isActive()){
+            getSession().getTransaction().commit();
+            getSession().close();
+        }
     }
     
     public T readById(ID id, boolean lock) {
@@ -85,6 +87,12 @@ public class GenericDAO<T, ID extends Serializable> {
         getSession().saveOrUpdate(entity);
         
         getSession().getTransaction().commit();
+        
+        return entity;
+    }
+    
+    public T persistWithoutTransaction(T entity) {
+        getSession().saveOrUpdate(entity);
         
         return entity;
     }

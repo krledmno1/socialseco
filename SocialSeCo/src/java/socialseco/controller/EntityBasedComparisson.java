@@ -106,6 +106,7 @@ public class EntityBasedComparisson {
         Map<Long,Double> userEvals = new HashMap<Long, Double>();
         for(FacebookUser u:users)
         {
+            System.out.println("Instance Base Matching with user " + u.getName());
             for(int j = 0; j<questionFeatures;j++)
             {
                 //Compare each questin feature only with  
@@ -118,7 +119,7 @@ public class EntityBasedComparisson {
                 
                 //compare
                 double value=0;
-                if(user!=null && question!=null)
+                if(user!=null && !user.isEmpty() && question!=null && !question.isEmpty() )
                 {
                     value = MaxWordSimilarity.compareMinDistanceWords(question, user);
                 }
@@ -170,6 +171,9 @@ public class EntityBasedComparisson {
         for(int i = 0;i<userFeatures;i++)
         {
             //flatten ith user feature
+            if(i == 17){
+                System.out.println("Aja!");
+            }
             String user = u.flattenFeature(i);
             user = Comparator.preprocess(user);
             
@@ -181,7 +185,7 @@ public class EntityBasedComparisson {
                 
                 //compare
                 double value=0;
-                if(user!=null&&question!=null)
+                if(user!=null && !user.isEmpty() && question!=null && !question.isEmpty())
                 {
                     value = MaxWordSimilarity.compareMinDistanceWords(question, user);
                     
@@ -282,7 +286,7 @@ public class EntityBasedComparisson {
         
         m.setUserNum(users);
         MatrixDAO dao = new MatrixDAO();
-        dao.persist(m);
+        dao.persistWithoutTransaction(m);
         
     }
     

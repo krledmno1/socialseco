@@ -41,7 +41,7 @@ dao.beginConversation();
 Object o = updater.totalRecall(platform);
 
 Question result = comparator.compare(q, o);
-dao.endConversation();
+
 %>
 
 
@@ -67,6 +67,7 @@ dao.endConversation();
     </body>
 </html>
 <%
+dao.endConversation();
 }
 else
 {
