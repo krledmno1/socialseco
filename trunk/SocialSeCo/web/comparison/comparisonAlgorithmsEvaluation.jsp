@@ -18,7 +18,7 @@ classification = new int[20][5];
 String [][] recomoandedUsers=new String[5][5];//temporal array which save the first 5 users who have been recomended by an algorithm for a question 
 int [] algorithmPoints=new int[4];
 for (int i=0;i<5;i++){
-//TODO here we have apply our algorithms and will insert the results of recomoandedUsers
+//TODO here we have to apply our algorithms and will insert the results to recomoandedUsers array
 }
 int userPosition=-100;
 for (int i=0;i<5;i++){//i-question
