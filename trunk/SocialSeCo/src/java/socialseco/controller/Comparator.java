@@ -326,21 +326,25 @@ public class Comparator {
         {
             if(words[i]!=null)
             {
-                char [] word = words[i].toCharArray();
-                boolean cond = true;
-                for(int j = 0; j<word.length;j++)
+                Stopwords sw = new Stopwords();
+                if(!sw.is(words[i]))
                 {
-                    if(!Character.isLetter(word[j]))
+                    char [] word = words[i].toCharArray();
+                    boolean cond = true;
+                    for(int j = 0; j<word.length;j++)
                     {
-                        cond = false;
+                        if(!Character.isLetter(word[j]))
+                        {
+                            cond = false;
+                        }
                     }
-                }
-                if(cond)
-                {
-                    stemmer.add(word, word.length);
-                    stemmer.stem();
-                    output += stemmer.toString();
-                    output += " ";
+                    if(cond)
+                    {
+                        stemmer.add(word, word.length);
+                        stemmer.stem();
+                        output += stemmer.toString();
+                        output += " ";
+                    }
                 }
             }
         }
