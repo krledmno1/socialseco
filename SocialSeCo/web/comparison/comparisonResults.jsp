@@ -60,7 +60,7 @@ Question result = comparator.compare(q, o);
         User u = (User)dao.readUsersById(result.getSelectedUsers()[i], platform);
         %>
                 <br/>
-                <div>Id: <%=result.getSelectedUsers()[i] %>   with confidence: <%=Double.parseDouble(result.getConfidence()[i])*100 %>%  </div>
+                <div>Id: <%=result.getSelectedUsers()[i] %>   with confidence: <%=Double.parseDouble(result.getConfidence()[i]) %>  </div>
                 <div>Name: <%=u.getName()%> </div>
                 <div>Surname: <%=u.getSurname()%> </div>
         <%}%>

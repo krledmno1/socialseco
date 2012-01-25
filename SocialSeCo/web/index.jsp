@@ -66,13 +66,26 @@
         <div id="link">
             <a href="./question/questionList.jsp">Saved questions</a>
         </div>
-        
+
+        <br/>
+        <br/>        
         
          <!-- RECOMMENDATION -->
         <h2>Friend recommendation</h2>
         <div id="link">
             <a href="./comparison/compareModels.jsp">Recommend friends</a>
         </div>
+        
+        
+        <br/>
+        <br/>        
+        
+         <!-- TOOLS -->
+        <h2>Tools</h2>
+        <div id="link">
+            <a href="./tools/flattenData.jsp">Flatten data</a>
+        </div>
+
         
     </body>
 </html>

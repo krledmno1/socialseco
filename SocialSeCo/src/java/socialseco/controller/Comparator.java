@@ -4,6 +4,7 @@
  */
 package socialseco.controller;
 
+import com.cybozu.labs.langdetect.LangDetectException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import socialseco.model.question.Instance;
 import socialseco.model.question.Question;
 import socialseco.model.question.Schema;
 
+
 /**
  *
  * @author krle
@@ -33,7 +35,27 @@ public class Comparator {
     public static String letterPairSimilarity = "letterPairSimilarity";
     public static String maxWordSimilarity = "MaxWordSimilarity";
     public static String instanceBasedMatching = "instanceBasedMatching";
+
+    public static LanguageDetector lang;
     
+    public static LanguageDetector initDetector()
+    {
+        if(lang==null)
+        {
+            try
+            {
+                lang = new LanguageDetector();
+                lang.init(System.getProperty("user.dir") +"/profiles");
+            
+
+            }
+            catch(Exception ex)
+            {
+                  
+            }
+        }
+        return lang;
+    }
     
     private String platform; 
     private String method;
@@ -142,8 +164,11 @@ public class Comparator {
         {
             String userBag = flatten(user);
             if(!userBag.isEmpty())
-            {
+            {   
+                System.out.println("Start comparing");
                 Double score = evaluateLetterPairSimilarity(questionBag,userBag);
+                System.out.println("Finish comparing");
+                
                 userEvals.put(user.getId(), score);
             }
         }
@@ -192,7 +217,7 @@ public class Comparator {
     //            UTILITIES
     //////////////////////////////////////////////
     
-    private String flatten(Question q)
+    public String flatten(Question q)
     {
         String output="";
         
@@ -225,57 +250,43 @@ public class Comparator {
     }
 
     
-    private String flatten(FacebookUser user)
+    public String flatten(FacebookUser user)
     {
+        System.out.println("Start flattening");
+        
         
         String output = "";
-        
-        output += user.flattenBio(output);
-        
-        output += user.flattenHometown(output);
         
         output += user.getGender()!=null ? user.getGender():"";
         output += " ";
         
-        output+= user.flattenLocation(output);
         
-        output += user.flattenReligion(output);
+        for(int i = 0;i<FacebookUser.fieldNum;i++)
+        {
+            String unchecked = user.flattenFeature(i);
+            boolean english = checkLanguage(unchecked);
+            if(english)
+            {
+                output+=unchecked;
+            }
+        }
         
-        output += user.flattenActivities(output);
-        
-        output += user.flattenBooks(output);
-        
-        output += user.flattenGames(output);
-        
-        output += user.flattenGroups(output);
-        
-        output += user.flattenInterests(output);
-        
-        output += user.flattenLikes(output);
-        
-        output += user.flattenMovies(output);
-        
-        output += user.flattenMusic(output);
-
-        output += user.flattenSports(output);
-        
-        output += user.flattenTelevision(output);
-        
-        output += user.flattenEducation(output);
-        
-        output += user.flattenWork(output);
-        
-        output += user.flattenLanguages(output);
+ 
         
         
+        System.out.println("Finish flattening, output= "+ output);
+        
+        System.out.println("Start preprocessing");
+       
         output = preprocess(output);
-            
+        
+        System.out.println("Stop preprocessing");            
         
         return output;
         
     }
     
-    private String flatten(LinkedinUser user)
+    public String flatten(LinkedinUser user)
     {
         String output = "";
         
@@ -295,8 +306,8 @@ public class Comparator {
       
         output = output.trim();
         
-      //  output = stem(output);
-        
+        output = stem(output);
+                
         output = output.trim();
         
         
@@ -340,7 +351,9 @@ public class Comparator {
 
     private Double evaluateLetterPairSimilarity(String questionBag, String userBag) {
         
+             
         return LetterPairSimilarity.compareStrings(questionBag, userBag);
+            
     }
 
     private Long takeMaxId(Map<Long, Double> userEvals) {
@@ -407,6 +420,9 @@ public class Comparator {
         
         return q;
     }
+    
+    
+   
         
         
     //////////////////////////////////////////////////////////
@@ -452,6 +468,24 @@ public class Comparator {
      */
     public void setNum(int num) {
         this.num = num;
+    }
+
+    private boolean checkLanguage(String unchecked)  
+    {
+        
+        String detect="";
+        try
+        {
+            detect=initDetector().detect(unchecked);
+        }
+        catch(Exception ex)
+        {
+            return false;
+        }
+        if(detect.equals("en"))
+            return true;
+        else
+            return false;
     }
 
    

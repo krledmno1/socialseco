@@ -3,6 +3,11 @@
     Created on : Jan 19, 2012, 12:55:26 PM
     Author     : krle
 --%>
+
+
+<%@page import="com.cybozu.labs.langdetect.Language"%>
+<%@page import="net.arnx.jsonic.JSONException"%>
+<%@page import="socialseco.controller.LanguageDetector"%>
 <%@page import="socialseco.controller.Comparator"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -17,6 +22,19 @@ if(first!=null && second !=null)
 Comparator c = new Comparator();
 first = c.preprocess(first);
 second = c.preprocess(second);
+
+LanguageDetector lang=null;;
+ try
+{
+    lang = new LanguageDetector();
+    lang.init(System.getProperty("user.dir") +"/profiles");
+            
+}
+catch(Exception ex)
+{
+    System.out.println("blablabla"+ex.toString());
+}
+ArrayList<Language> language = lang.detectLangs(first);
 
 String [] words1  = first.split("\\s");
 String [] words2  = second.split("\\s");
@@ -63,15 +81,23 @@ sum = sum/eval.size();
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Testing area!</h1>
         Result: <%=sum %>
+        <br/>
+        Language: <%
         
-       <% }
-%>
+        for(Language l:language)
+        {%>
+           <%=l.lang %> with probability <%=l.prob %> 
+           <br/>
+     <% } %>
+        
+<% } %>
         <form action="test.jsp" method="post">
             <input type="text" name="first" />
             <input type="text" name="second" />
             <input type="submit" name="submit" value="sub" />
+            
         </form>
     </body>
 </html>
