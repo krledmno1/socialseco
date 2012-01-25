@@ -28,13 +28,13 @@ for (int i=0;i<5;i++){//i-question
                 userPosition=k;//in which row is the j-recomendeduser in the users array
             }                                    
         }
-        if(classification[userPosition][i]==j){//if our algorithm return exactly 
+        if(classification[userPosition][i]==j){//if our algorithm return the exact predicted order 
             algorithmPoints[1]=algorithmPoints[1]+3;
         }
-        else if((classification[userPosition][i]-j==1)||(classification[userPosition][i]-j==-1)){
+        else if((classification[userPosition][i]-j==1)||(classification[userPosition][i]-j==-1)){//if our algorithm return the exact predicted order-/+1
             algorithmPoints[1]=algorithmPoints[1]+2;
         }
-         else if((classification[userPosition][i]-j==2)||(classification[userPosition][i]-j==-2)){
+         else if((classification[userPosition][i]-j==2)||(classification[userPosition][i]-j==-2)){//if our algorithm return the exact predicted order-/+2
             algorithmPoints[1]=algorithmPoints[1]+1;
         }
         
