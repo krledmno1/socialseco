@@ -35,6 +35,23 @@ public class AlgorithmTest {
     public static void tearDownClass() throws Exception {
     }
     
+    @Test
+    public void testComputeTFIDFScore() {
+        
+         //tf-idf(t,f) = tf(t,d)*idf(f)
+        String[] arrayStr = {"my cow is a big cow", "the french cow", "swiss laughing cow", "my cow gives milk", 
+        "i have a blue dog", "mama"};
+        int noDocs = 6;
+        String term = "cow";
+        String doc = "my cow is a big cow";
+        
+        double score = TFIDFMethod.computeTFIDFScore(noDocs, term, doc, arrayStr);
+        
+        System.out.println("Score is" + score);
+        
+    
+    }
+    
     @Before
     public void setUp() {
         
