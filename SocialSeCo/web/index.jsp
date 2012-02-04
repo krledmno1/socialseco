@@ -85,6 +85,9 @@
         <div id="link">
             <a href="./tools/flattenData.jsp">Flatten data</a>
         </div>
+        <div id="link">
+            <a href="./tools/runSimilarity.jsp">Run Similarity</a>
+        </div>
 
         
     </body>
