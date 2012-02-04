@@ -35,6 +35,7 @@ public class Comparator {
     public static String letterPairSimilarity = "letterPairSimilarity";
     public static String maxWordSimilarity = "MaxWordSimilarity";
     public static String instanceBasedMatching = "instanceBasedMatching";
+    public static String tf_idfBasedMatching = "tf_idfBasedMatching";
 
     public static LanguageDetector lang;
     
@@ -84,6 +85,9 @@ public class Comparator {
             
             if(method.equals(instanceBasedMatching))
                 ret=entityBasedComparisson(q, (List<FacebookUser>)o, getNum());
+            
+            if(method.equals(tf_idfBasedMatching))
+                ret=tf_ifdBasedComparisson(q, (List<FacebookUser>)o, getNum());
            
         }
         if(platform.equals(linkedinPlatform))
@@ -96,6 +100,9 @@ public class Comparator {
             
             if(method.equals(instanceBasedMatching))
                 ret=entityBasedComparisson(q, (ArrayList<LinkedinUser>)o, getNum());
+            
+            if(method.equals(tf_idfBasedMatching))
+                ret=tf_ifdBasedComparisson(q, (ArrayList<LinkedinUser>)o, getNum());
         }
         
         return ret;
@@ -185,8 +192,12 @@ public class Comparator {
         for(LinkedinUser user:users)
         {
             String userBag = flatten(user);
+            
+            if(!userBag.isEmpty())
+            {
             Double score = evaluateLetterPairSimilarity(questionBag,userBag);
             userEvals.put(user.getId(), score);
+            }
         }
         q = setRecommendedUsers(q,userEvals,num);
         return q;
@@ -489,6 +500,48 @@ public class Comparator {
             return true;
         else
             return false;
+    }
+
+    private Question tf_ifdBasedComparisson(Question q, List<FacebookUser> list, int num) 
+    {
+        String flattenedQuestion = flatten(q);
+        
+        String [] flattenedUsers = new String[list.size()];
+        List<Long> ids = new ArrayList<Long>();
+        int i = 0;
+        for(FacebookUser u: list)
+        {
+            ids.add(u.getId());
+            flattenedUsers[i] = flatten(u);
+            i++;
+        }
+        
+        Map<Long,Double> userEvals = TFIDFMethod.compare(flattenedQuestion,ids, flattenedUsers);
+        q = setRecommendedUsers(q,userEvals,num);
+        
+        return q;
+        
+    }
+
+    private Question tf_ifdBasedComparisson(Question q, ArrayList<LinkedinUser> arrayList, int num) 
+    {
+        
+        String flattenedQuestion = flatten(q);
+        
+        String [] flattenedUsers = new String[arrayList.size()];
+        List<Long> ids = new ArrayList<Long>();
+        int i = 0;
+        for(LinkedinUser u: arrayList)
+        {
+            ids.add(u.getId());
+            flattenedUsers[i] = flatten(u);
+            i++;
+        }
+        
+        Map<Long,Double> userEvals = TFIDFMethod.compare(flattenedQuestion,ids, flattenedUsers);
+        q = setRecommendedUsers(q,userEvals,num);
+        
+        return q;
     }
 
    

@@ -55,6 +55,7 @@ if(obj!=null)
                 <option value="<%=Comparator.letterPairSimilarity%>" >Letter pair similarity</option>
                 <option value="<%=Comparator.maxWordSimilarity%>" >Max Word Similarity</option>
                 <option value="<%=Comparator.instanceBasedMatching%>" >Instance based matching</option>
+                <option value="<%=Comparator.tf_idfBasedMatching%>" >TF-IDF based matching</option>
             </select>
         
         <h2> Number of recommendations </h2>
