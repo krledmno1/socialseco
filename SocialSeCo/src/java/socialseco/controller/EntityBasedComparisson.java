@@ -67,6 +67,8 @@ public class EntityBasedComparisson {
             id = 1l;
             
             //add linkedin user fields
+            for(int i = 0;i<LinkedinUser.fieldNum;i++)
+                userFields.add(LinkedinUser.fields[i]);
         }
         
         
@@ -134,6 +136,47 @@ public class EntityBasedComparisson {
         
     }
     
+    public Map<Long,Double> compare(Question q, ArrayList<LinkedinUser> users)
+    {
+        buildMatrix(q,Comparator.linkedinPlatform);
+        learn(q,users);
+        int [] maxmatch = findBestMatches();
+        
+        
+        Map<Long,Double> userEvals = new HashMap<Long, Double>();
+        for(LinkedinUser u:users)
+        {
+            System.out.println("Instance Base Matching with user " + u.getName());
+            for(int j = 0; j<questionFeatures;j++)
+            {
+                //Compare each questin feature only with  
+                //best match in user features
+                String user = u.flattenField(LinkedinUser.fields[maxmatch[j]]);
+                user = Comparator.preprocess(user);
+                
+                String question = q.flattenFeature(j);
+                question = Comparator.preprocess(question);
+                
+                //compare
+                double value=0;
+                if(user!=null && !user.isEmpty() && question!=null && !question.isEmpty() )
+                {
+                    value = MaxWordSimilarity.compareMinDistanceWords(question, user);
+                }
+                userEvals.put(u.getId(), value);
+
+
+            }
+        }
+        
+        return userEvals;
+ 
+        
+    }
+    
+    
+    
+    
     private int[] findBestMatches()
     {
         int [] max = new int[questionFeatures];
@@ -161,6 +204,14 @@ public class EntityBasedComparisson {
     private void learn(Question q, List<FacebookUser> users)
     {
         for(FacebookUser u:users)
+        {
+            comapareLearn(q, u);
+        }
+    }
+    
+    private void learn(Question q, ArrayList<LinkedinUser> users)
+    {
+        for(LinkedinUser u:users)
         {
             comapareLearn(q, u);
         }
@@ -206,6 +257,47 @@ public class EntityBasedComparisson {
         updateDB();
         
     }
+    
+    
+    private void comapareLearn(Question q, LinkedinUser u)
+    {
+        for(int i = 0;i<userFeatures;i++)
+        {
+            //flatten ith user feature
+       
+            String user = u.flattenField(LinkedinUser.fields[i]);
+            user = Comparator.preprocess(user);
+            
+            for(int j = 0; j<questionFeatures;j++)
+            {
+                //flatten jth question feature
+                String question = q.flattenFeature(j);
+                question = Comparator.preprocess(question);
+                
+                //compare
+                double value=0;
+                if(user!=null && !user.isEmpty() && question!=null && !question.isEmpty())
+                {
+                    value = MaxWordSimilarity.compareMinDistanceWords(question, user);
+                    
+                    //update matrix[i][j] with iterative mean
+                    users++;
+                    comparisonMatrix[i][j] = comparisonMatrix[i][j] + 1/users*(value-comparisonMatrix[i][j]);
+                }
+                
+                
+                
+                
+                
+            }
+        }
+        
+        
+        //update matrix in DB
+        updateDB();
+        
+    }
+    
 
     private void init() {
        for(int i = 0; i<userFeatures; i++)

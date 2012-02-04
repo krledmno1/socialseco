@@ -51,7 +51,7 @@ public class Comparator {
             }
             catch(Exception ex)
             {
-                  
+                  System.out.println(System.getProperty("user.dir"));
             }
         }
         return lang;
@@ -208,7 +208,12 @@ public class Comparator {
     
     private Question entityBasedComparisson(Question q, ArrayList<LinkedinUser> users, int num)
     {
-        return null;
+        EntityBasedComparisson ebc = new EntityBasedComparisson();
+        Map<Long,Double> userEvals = ebc.compare(q, users);
+        
+        q = setRecommendedUsers(q,userEvals,num);
+        
+        return q;
     }
     
     

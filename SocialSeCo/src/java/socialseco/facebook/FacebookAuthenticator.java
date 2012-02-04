@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class FacebookAuthenticator {
     
-       private String redirectUri = "http://4sy6.localtunnel.com";
+       private String redirectUri = "http://3tw8.localtunnel.com";
        private String appID = "170421693057418";
        private String appSecret = "b70fa8c7fd12965d0b32dd7a9ec6d697";
        private String pathUserAuth = "";

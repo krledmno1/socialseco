@@ -18,7 +18,7 @@ public class LinkedinUser
         extends User {
 
     public static int fieldNum = 14;
-    protected static String[] fields =
+    public static String[] fields =
         {"headline", "location", "locationCountryCode", "industry",
          "summary", "associations", "honors", "languages", "educations",
          "positions", "publications", "patents", "certifications",
@@ -260,25 +260,25 @@ public class LinkedinUser
     }
     
     public String flattenHeadline(){
-        return headline;
+        return headline!=null?headline:"";
     }
     public String flattenLocation(){
-        return location;
+        return location!=null?location:"";
     }
     public String flattenLocationCountryCode(){
-        return locationCountryCode;
+        return locationCountryCode!=null?locationCountryCode:"";
     }
     public String flattenIndustry(){
-        return industry;
+        return industry!=null?industry:"";
     }
     public String flattenSummary(){
-        return summary;
+        return summary!=null?summary:"";
     }
     public String flattenAssociations(){
-        return associations;
+        return associations!=null?associations:"";
     }
     public String flattenHonors(){
-        return honors;
+        return honors!=null?honors:"";
     }
     public String flattenLanguages() {
         String out = "";
