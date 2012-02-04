@@ -11,17 +11,7 @@ package socialseco.evaluation;
 
 import socialseco.dao.UserDAO;
 import socialseco.controller.*;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import socialseco.model.facebook.FacebookUser;
 import socialseco.model.question.Question;
-import static org.junit.Assert.*;
 
 public class comarisonAlgorithmValuation {
       public String[] questions={"what is the kind of music that ladi gaga sing ","which is the best resturan a milano","where can i learn italian in italia ","who can recomend me a horro film","what is the best sport game ever "};// array of the question to be used in our evaluation   

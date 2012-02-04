@@ -253,35 +253,23 @@ public class Comparator {
     public String flatten(FacebookUser user)
     {
         System.out.println("Start flattening");
-        
-        
         String output = "";
         
         output += user.getGender()!=null ? user.getGender():"";
         output += " ";
         
-        
-        for(int i = 0;i<FacebookUser.fieldNum;i++)
-        {
+        for(int i = 0;i<FacebookUser.fieldNum;i++) {
             String unchecked = user.flattenFeature(i);
             boolean english = checkLanguage(unchecked);
-            if(english)
-            {
+            if(english) {
                 output+=unchecked;
             }
         }
         
- 
-        
-        
         System.out.println("Finish flattening, output= "+ output);
-        
         System.out.println("Start preprocessing");
-       
         output = preprocess(output);
-        
-        System.out.println("Stop preprocessing");            
-        
+        System.out.println("Stop preprocessing");
         return output;
         
     }
@@ -290,7 +278,13 @@ public class Comparator {
     {
         String output = "";
         
-        //flatten linkedin
+        for(String field:LinkedinUser.getFields()) {
+            String unchecked = user.flattenField(field);
+            boolean english = checkLanguage(unchecked);
+            if(english) {
+                output += unchecked;
+            }
+        }
         
         output = preprocess(output);
         return output;

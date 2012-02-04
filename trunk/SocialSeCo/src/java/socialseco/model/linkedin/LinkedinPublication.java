@@ -79,4 +79,14 @@ public class LinkedinPublication
         this.summary = summary;
     }
     
+    public String flatten(){
+        String out = "";
+        if(title != null) out += title + " ";
+        if(publisher != null) out += publisher + " ";
+        if(date != null) out += date.flatten() + " ";
+        if(url != null) out += url + " ";
+        if(summary != null) out += summary + " ";
+        
+        return out;
+    }
 }

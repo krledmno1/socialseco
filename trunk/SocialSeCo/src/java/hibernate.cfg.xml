@@ -44,5 +44,6 @@
     <mapping class="socialseco.model.facebook.FacebookWork"/>
     <mapping class="socialseco.model.facebook.FacebookLanguage"/>
     <mapping class="socialseco.model.util.Matrix"/>
+    <mapping class="socialseco.model.UserSimilarity"/>
   </session-factory>
 </hibernate-configuration>

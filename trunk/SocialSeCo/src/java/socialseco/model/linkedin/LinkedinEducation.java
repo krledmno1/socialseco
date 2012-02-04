@@ -103,4 +103,17 @@ public class LinkedinEducation
     public void setEndDate(LinkedinDate endDate) {
         this.endDate = endDate;
     }
+    
+    public String flatten(){
+        String out = "";
+        if(schoolName != null) out += schoolName + " ";
+        if(fieldOfStudy != null) out += fieldOfStudy + " ";
+        if(degree != null) out += degree + " ";
+        if(activities != null) out += activities + " ";
+        if(notes != null) out += notes + " ";
+        if(startDate != null) out += startDate.flatten() + " ";
+        if(endDate != null) out += endDate.flatten() + " ";
+        
+        return out;
+    }
 }

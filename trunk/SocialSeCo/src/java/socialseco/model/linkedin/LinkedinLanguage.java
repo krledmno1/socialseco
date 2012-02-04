@@ -42,6 +42,11 @@ public class LinkedinLanguage
     public void setLinkedinId(String linkedinId) {
         this.linkedinId = linkedinId;
     }
+    
+    public String flatten(){
+        if(name == null) return "";
+        return name;
+    }
 
     @Override
     public boolean equals(Object obj) {
