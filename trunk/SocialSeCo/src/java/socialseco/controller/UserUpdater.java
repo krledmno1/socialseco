@@ -31,7 +31,7 @@ public class UserUpdater {
         }
         if(platform.equals("linkedin"))
         {
-            ret = dao.readAllLinkedinUsers();
+            ret = dao.readAllLinkedinUsersWithoutTransaction();
         }
         return ret;
     }
