@@ -81,4 +81,14 @@ public class LinkedinPatent
         this.url = url;
     }
     
+    public String flatten(){
+        String out = "";
+        if(title != null) out += title + " ";
+        if(summary != null) out += summary + " ";
+        if(number != null) out += number + " ";
+        if(date != null) out += date.flatten() + " ";
+        if(url != null) out += url + " ";
+        
+        return out;
+    }
 }

@@ -18,6 +18,11 @@ public class LinkedinUser
         extends User {
 
     public static int fieldNum = 14;
+    protected static String[] fields =
+        {"headline", "location", "locationCountryCode", "industry",
+         "summary", "associations", "honors", "languages", "educations",
+         "positions", "publications", "patents", "certifications",
+         "skills"};
     
     protected String linkedinId;
     @Column(length=500)
@@ -48,6 +53,7 @@ public class LinkedinUser
     protected List<LinkedinRecommendation> recommendations;
     @OneToMany(cascade=CascadeType.ALL)
     protected List<LinkedinSkill> skills;
+    
     
     public LinkedinUser(){
         languages = new ArrayList<LinkedinLanguage>();
@@ -212,5 +218,115 @@ public class LinkedinUser
             setRecommendations(linkedinUser.getRecommendations());
             setSkills(linkedinUser.getSkills());
         }
+    }
+    
+    public static String[] getFields(){
+        return fields;
+    }
+    
+    public String flattenField(String field){
+        if(field == null || field.isEmpty())
+            return "";
+        else if(field.equals("headline"))
+            return flattenHeadline();
+        else if(field.equals("location"))
+            return flattenLocation();
+        else if(field.equals("locationCountryCode"))
+            return flattenLocationCountryCode();
+        else if(field.equals("industry"))
+            return flattenIndustry();
+        else if(field.equals("summary"))
+            return flattenSummary();
+        else if(field.equals("associations"))
+            return flattenAssociations();
+        else if(field.equals("honors"))
+            return flattenHonors();
+        else if(field.equals("languages"))
+            return flattenLanguages();
+        else if(field.equals("educations"))
+            return flattenEducations();
+        else if(field.equals("positions"))
+            return flattenPositions();
+        else if(field.equals("publications"))
+            return flattenPublications();
+        else if(field.equals("patents"))
+            return flattenPatents();
+        else if(field.equals("certifications"))
+            return flattenCertifications();
+        else if(field.equals("skills"))
+            return flattenSkills();
+        else
+            return "";
+    }
+    
+    public String flattenHeadline(){
+        return headline;
+    }
+    public String flattenLocation(){
+        return location;
+    }
+    public String flattenLocationCountryCode(){
+        return locationCountryCode;
+    }
+    public String flattenIndustry(){
+        return industry;
+    }
+    public String flattenSummary(){
+        return summary;
+    }
+    public String flattenAssociations(){
+        return associations;
+    }
+    public String flattenHonors(){
+        return honors;
+    }
+    public String flattenLanguages() {
+        String out = "";
+        for(LinkedinLanguage language:languages){
+            if(language != null) out += language.flatten();
+        }
+        return out;
+    }
+    public String flattenEducations() {
+        String out = "";
+        for(LinkedinEducation education:educations){
+            if(education != null) out += education.flatten();
+        }
+        return out;
+    }
+    public String flattenPositions() {
+        String out = "";
+        for(LinkedinPosition position:positions){
+            if(position != null) out += position.flatten();
+        }
+        return out;
+    }
+    public String flattenPublications() {
+        String out = "";
+        for(LinkedinPublication publication:publications){
+            if(publication != null) out += publication.flatten();
+        }
+        return out;
+    }
+    public String flattenPatents() {
+        String out = "";
+        for(LinkedinPatent patent:patents){
+            if(patent != null) out += patent.flatten();
+        }
+        return out;
+    }
+    public String flattenCertifications() {
+        String out = "";
+        for(LinkedinCertification certification:certifications){
+            if(certification != null) out += certification.flatten();
+        }
+        return out;
+    }
+    public String flattenSkills() {
+        String out = "";
+        for(LinkedinSkill skill:skills){
+            if(skill != null) out += skill.flatten();
+        }
+        return out;
     }
 }

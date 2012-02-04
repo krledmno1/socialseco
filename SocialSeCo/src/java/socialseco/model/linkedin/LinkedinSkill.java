@@ -21,6 +21,7 @@ public class LinkedinSkill
     @Column(length=500)
     protected String name;
     
+    
     public Long getId() {
         return id;
     }
@@ -40,5 +41,12 @@ public class LinkedinSkill
     }
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String flatten(){
+        String out = "";
+        if(name != null) out += name + " ";
+        
+        return out;
     }
 }

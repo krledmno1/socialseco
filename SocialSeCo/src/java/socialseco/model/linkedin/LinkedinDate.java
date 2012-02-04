@@ -58,7 +58,11 @@ public class LinkedinDate
     public void setDay(String day) {
         this.day = Integer.parseInt(day);
     }
-
+    
+    public String flatten() {
+        return toString();
+    }
+    
     @Override
     public String toString() {
         String ret = "";

@@ -69,4 +69,13 @@ public class LinkedinCertification
         this.endDate = endDate;
     }
     
+    public String flatten(){
+        String out = "";
+        if(name != null) out += name + " ";
+        if(number != null) out += number + " ";
+        if(startDate != null) out += startDate.flatten() + " ";
+        if(endDate != null) out += endDate.flatten() + " ";
+        
+        return out;
+    }
 }

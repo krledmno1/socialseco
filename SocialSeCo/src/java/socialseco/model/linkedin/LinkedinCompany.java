@@ -74,4 +74,14 @@ public class LinkedinCompany
         this.ticker = ticker;
     }
     
+    public String flatten(){
+        String out = "";
+        if(name != null) out += name + " ";
+        if(type != null) out += type + " ";
+        if(company_size != null) out += company_size + " ";
+        if(industry != null) out += industry + " ";
+        if(ticker != null) out += ticker + " ";
+        
+        return out;
+    }
 }

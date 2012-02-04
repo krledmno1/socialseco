@@ -84,4 +84,15 @@ public class LinkedinPosition
     public void setCompany(LinkedinCompany company) {
         this.company = company;
     }
+    
+    public String flatten(){
+        String out = "";
+        if(title != null) out += title + " ";
+        if(summary != null) out += summary + " ";
+        if(startDate != null) out += startDate.flatten() + " ";
+        if(endDate != null) out += endDate.flatten() + " ";
+        if(company != null) out += company.flatten() + " ";
+        
+        return out;
+    }
 }
