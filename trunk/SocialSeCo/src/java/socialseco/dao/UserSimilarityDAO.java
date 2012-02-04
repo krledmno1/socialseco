@@ -29,4 +29,26 @@ public class UserSimilarityDAO
         return t.get(0);
     }
     
+    public UserSimilarity readByFacebookUsers(FacebookUser fbkUser) {
+        List<UserSimilarity> t = getSession()
+                .createCriteria(getPersistentClass())
+                .add(Restrictions.eq("facebookUser", fbkUser))
+                .list();
+        
+        if(t == null || t.isEmpty())
+            return null;
+        return t.get(0);
+    }
+    
+    public UserSimilarity readByLinkedinUsers(LinkedinUser linUser) {
+        List<UserSimilarity> t = getSession()
+                .createCriteria(getPersistentClass())
+                .add(Restrictions.eq("linkedinUser", linUser))
+                .list();
+        
+        if(t == null || t.isEmpty())
+            return null;
+        return t.get(0);
+    }
+    
 }
