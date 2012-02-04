@@ -35,7 +35,15 @@ public class AlgorithmTest {
     public static void tearDownClass() throws Exception {
     }
     
+    
+    
     @Test
+    public void testUserSimilarity() {
+        UserSimilarityController controller = new UserSimilarityController();
+        controller.processAllUsers();
+    }
+    
+    //@Test
     public void testComputeTFIDFScore() {
         
          //tf-idf(t,f) = tf(t,d)*idf(f)
@@ -62,7 +70,7 @@ public class AlgorithmTest {
     }
     // The methods must be annotated with annotation @Test. For example:
     //
-    @Test
+    //@Test
     public void test_letterPairSimilarity_Q1() {
         String method = Comparator.letterPairSimilarity;
         String platform = Comparator.facebookPlatform;
